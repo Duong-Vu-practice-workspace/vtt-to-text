@@ -1,758 +1,503 @@
-WEBVTT
-
-5dee003a-615b-42fc-b544-3b3fc1bd4c34-0
-00:00:00.680 --> 00:00:01.400
-Welcome back.
-
-39f7985a-3b15-4e5c-9437-6c709574bb8b-0
-00:00:03.280 --> 00:00:07.330
-In this lecture we're going to talk about
-gathering, classifying,
-
-39f7985a-3b15-4e5c-9437-6c709574bb8b-1
-00:00:07.330 --> 00:00:12.240
-and analyzing requirements as the first
-step in designing a large scale system.
-
-e099c55d-6104-4355-b647-7c5cae097152-0
-00:00:13.000 --> 00:00:17.120
-But before we get into any details,
-let's first get some motivation.
-
-479141dd-dd63-4007-96b5-7b93a8a8daa5-0
-00:00:18.760 --> 00:00:24.185
-System requirements is just a formal word
-for figuring out and narrowing down what
-
-479141dd-dd63-4007-96b5-7b93a8a8daa5-1
-00:00:24.185 --> 00:00:26.800
-exactly we need to build for our client.
-
-7498d374-4678-441f-8a5e-9b0be973268c-0
-00:00:27.400 --> 00:00:30.797
-As software engineers,
-we shouldn't be new to receiving formal
-
-7498d374-4678-441f-8a5e-9b0be973268c-1
-00:00:30.797 --> 00:00:33.440
-requirements for the task we need to
-accomplish.
-
-e746f79b-906f-4a2b-af55-3c6aa0f63b06-0
-00:00:33.720 --> 00:00:36.953
-But when it comes to the design of a
-large scale system,
-
-e746f79b-906f-4a2b-af55-3c6aa0f63b06-1
-00:00:36.953 --> 00:00:41.433
-there are a few differences from the
-usual requirements we are used to getting
-
-e746f79b-906f-4a2b-af55-3c6aa0f63b06-2
-00:00:41.433 --> 00:00:44.440
-for implementing a method, an algorithm,
-or a class.
-
-2b92b6cf-535c-4d2f-bdf7-66b4d4e6e671-0
-00:00:46.480 --> 00:00:51.019
-The first difference is the scope and
-level of obstruction of the requirements
-
-2b92b6cf-535c-4d2f-bdf7-66b4d4e6e671-1
-00:00:51.019 --> 00:00:53.720
-and especially the solution we need to
-design.
-
-2a3e4a18-e5d3-43c5-94dd-a95e9f697247-0
-00:00:54.600 --> 00:00:57.829
-For example,
-when we're tasked to implement a method
-
-2a3e4a18-e5d3-43c5-94dd-a95e9f697247-1
-00:00:57.829 --> 00:01:02.644
-or an algorithm in an existing code base,
-we typically know what the input and
-
-2a3e4a18-e5d3-43c5-94dd-a95e9f697247-2
-00:01:02.644 --> 00:01:03.680
-output look like.
-
-89a5a566-9fe7-4a60-a243-0a628c10c128-0
-00:01:03.920 --> 00:01:08.360
-We're also somewhat limited to the
-programming languages we're going to use.
-
-f31e2986-a21d-482f-99fe-ffcd79909d79-0
-00:01:09.240 --> 00:01:13.580
-As we go up to a more high level
-obstruction, like designing a Class,
-
-f31e2986-a21d-482f-99fe-ffcd79909d79-1
-00:01:13.580 --> 00:01:18.540
-A module, a library, or an application,
-the range of possible ways to solve the
-
-f31e2986-a21d-482f-99fe-ffcd79909d79-2
-00:01:18.540 --> 00:01:22.880
-problem becomes bigger and bigger as we
-have more degrees of freedom.
-
-070abd81-57fd-4974-8956-7fdc8d278109-0
-00:01:23.560 --> 00:01:26.371
-Also,
-the scope of the problem becomes so high
-
-070abd81-57fd-4974-8956-7fdc8d278109-1
-00:01:26.371 --> 00:01:29.960
-that it's hard for us to even visualize
-the implementation.
-
-2a9a175f-6872-4d71-bd72-cb88974fa999-0
-00:01:31.200 --> 00:01:34.073
-So when we are asked to design an entire
-system,
-
-2a9a175f-6872-4d71-bd72-cb88974fa999-1
-00:01:34.073 --> 00:01:38.120
-we may feel so overwhelmed that we may
-not even know where to begin.
-
-f530cad5-2a25-46d1-8cc3-4c22181c4a43-0
-00:01:39.280 --> 00:01:42.374
-For example,
-imagine you're asked to design a file
-
-f530cad5-2a25-46d1-8cc3-4c22181c4a43-1
-00:01:42.374 --> 00:01:45.044
-storage system,
-a video streaming solution,
-
-f530cad5-2a25-46d1-8cc3-4c22181c4a43-2
-00:01:45.044 --> 00:01:49.837
-or a ride sharing service that needs to
-scale to serving millions of users per
-
-f530cad5-2a25-46d1-8cc3-4c22181c4a43-3
-00:01:49.837 --> 00:01:50.079
-day.
-
-0e40880e-f5fc-44ee-afb5-69e899a2844e-0
-00:01:50.240 --> 00:01:52.760
-It's hard not to get overwhelmed by such
-a task.
-
-5ff6065f-d87c-4ede-833e-15cdff3417b5-0
-00:01:54.600 --> 00:01:59.019
-The second challenge and difference from
-what we're normally used to is the level
-
-5ff6065f-d87c-4ede-833e-15cdff3417b5-1
-00:01:59.019 --> 00:01:59.720
-of ambiguity.
-
-1f956c46-9b1e-44a6-8b14-8e505e59abfb-0
-00:02:00.360 --> 00:02:03.040
-The reason for this ambiguity is twofold.
-
-7042cb5e-b57a-425d-8c87-4b39323f04a2-0
-00:02:03.560 --> 00:02:06.782
-First of all,
-in many cases the requirements are not
-
-7042cb5e-b57a-425d-8c87-4b39323f04a2-1
-00:02:06.782 --> 00:02:10.916
-even coming from an engineer,
-and sometimes they're not even coming
-
-7042cb5e-b57a-425d-8c87-4b39323f04a2-2
-00:02:10.916 --> 00:02:12.680
-from a very technical person.
-
-ac9f333a-4dbc-4572-92f1-41ec54e906dc-0
-00:02:13.040 --> 00:02:17.771
-So the client or product manager may ask
-for something very high level,
-
-ac9f333a-4dbc-4572-92f1-41ec54e906dc-1
-00:02:17.771 --> 00:02:23.225
-and it's our responsibility to transform
-those requests into precise and technical
-
-ac9f333a-4dbc-4572-92f1-41ec54e906dc-2
-00:02:23.225 --> 00:02:24.080
-requirements.
-
-24bcf50e-c806-4f0d-8ad1-a4df580d5ef2-0
-00:02:24.400 --> 00:02:28.729
-Those technical requirements will serve
-as the foundation for building our
-
-24bcf50e-c806-4f0d-8ad1-a4df580d5ef2-1
-00:02:28.729 --> 00:02:30.000
-software architecture.
-
-ebabb3d0-bb41-4d96-8523-e9a32dbaac55-0
-00:02:30.320 --> 00:02:34.735
-The second reason for the high level of
-ambiguity is getting the specific
-
-ebabb3d0-bb41-4d96-8523-e9a32dbaac55-1
-00:02:34.735 --> 00:02:37.480
-requirements is already part of the
-solution.
-
-ed05a462-ecbe-4265-8d3f-0a8fe7704a08-0
-00:02:37.880 --> 00:02:40.637
-This may seem a little odd for us at
-first,
-
-ed05a462-ecbe-4265-8d3f-0a8fe7704a08-1
-00:02:40.637 --> 00:02:45.526
-but we have to remember that the client
-doesn't always know exactly what they
-
-ed05a462-ecbe-4265-8d3f-0a8fe7704a08-2
-00:02:45.526 --> 00:02:45.840
-need.
-
-0613570a-0236-4a0c-a442-6307d155c9d2-0
-00:02:45.920 --> 00:02:49.520
-The only thing they know for sure is the
-problem they need to solve.
-
-f4337826-4c87-4255-ac5f-d67b12efc591-0
-00:02:50.400 --> 00:02:53.160
-To demonstrate this,
-let's take a specific example.
-
-f821f1f9-b813-4594-9749-e58dab53c562-0
-00:02:55.280 --> 00:02:59.761
-Let's say we're asked to design A
-hitchhiking service that allows people to
-
-f821f1f9-b813-4594-9749-e58dab53c562-1
-00:02:59.761 --> 00:03:04.420
-join drivers that are already driving on
-a particular route and are willing to
-
-f821f1f9-b813-4594-9749-e58dab53c562-2
-00:03:04.420 --> 00:03:06.720
-take passengers on their way for a fee.
-
-a75d85d4-f925-472c-9bc6-99215ce8c0e9-0
-00:03:06.920 --> 00:03:11.995
-That may be all the requirements we get
-from the client and it is up to us to ask
-
-a75d85d4-f925-472c-9bc6-99215ce8c0e9-1
-00:03:11.995 --> 00:03:16.761
-things like is it going to be a real time
-service or the riders will have to
-
-a75d85d4-f925-472c-9bc6-99215ce8c0e9-2
-00:03:16.761 --> 00:03:18.679
-contact the drivers in advance?
-
-764a8954-24d5-43a4-9f34-2663a21f2e6c-0
-00:03:18.800 --> 00:03:22.840
-Is it going to be a mobile or desktop
-experience or maybe both?
-
-4bd05bba-741b-41b8-95cc-d24ed035c649-0
-00:03:23.040 --> 00:03:27.931
-Are we going to enable payment through
-our system or the riders will have to pay
-
-4bd05bba-741b-41b8-95cc-d24ed035c649-1
-00:03:27.931 --> 00:03:29.200
-the drivers directly?
-
-ebb83778-3434-4323-b11e-179e19aacbe5-0
-00:03:29.400 --> 00:03:33.028
-In some cases,
-the client may not even know the answer
-
-ebb83778-3434-4323-b11e-179e19aacbe5-1
-00:03:33.028 --> 00:03:36.920
-to those right away until we actually ask
-those questions.
-
-f7537723-517e-4215-91e6-853de49ce654-0
-00:03:37.080 --> 00:03:40.251
-That is why in most system design
-interviews,
-
-f7537723-517e-4215-91e6-853de49ce654-1
-00:03:40.251 --> 00:03:45.145
-one of the things being tested is our
-ability to clarify and ask those
-
-f7537723-517e-4215-91e6-853de49ce654-2
-00:03:45.145 --> 00:03:46.800
-questions ahead of time.
-
-9f9afd47-58aa-433e-bb20-2b1abc4c7e23-0
-00:03:47.000 --> 00:03:51.017
-Because as we can see,
-asking those questions and gathering
-
-9f9afd47-58aa-433e-bb20-2b1abc4c7e23-1
-00:03:51.017 --> 00:03:54.500
-those requirements is already part of the
-solution,
-
-9f9afd47-58aa-433e-bb20-2b1abc4c7e23-2
-00:03:54.500 --> 00:03:58.920
-and it greatly narrows down what we need
-to design and build Now.
-
-e972f4a7-2fb1-4c0c-b038-5c9642c8eb39-0
-00:03:58.920 --> 00:04:02.400
-What happens if we don't get all the
-requirements right?
-
-f220cafd-2d9b-414d-ac3e-58a78baf8462-0
-00:04:03.000 --> 00:04:04.720
-Can't we just do it incrementally?
-
-0b693c43-5003-49f7-8127-8b8220c75423-0
-00:04:04.960 --> 00:04:09.120
-Why can't we simply build something and
-see if it satisfies the client?
-
-dc41b375-ad8f-45e4-b1ec-565aa904ef19-0
-00:04:09.200 --> 00:04:12.680
-And if it doesn't, no big deal,
-we can just fix it, can't we?
-
-67fa2076-831a-4609-be59-451e18a098a7-0
-00:04:13.000 --> 00:04:15.997
-After all,
-we're not building a building or a bridge
-
-67fa2076-831a-4609-be59-451e18a098a7-1
-00:04:15.997 --> 00:04:16.280
-here.
-
-cb682204-51ce-44fa-981b-6b4572661598-0
-00:04:16.280 --> 00:04:20.470
-There's seemingly no big cost of
-materials and software like in mechanical
-
-cb682204-51ce-44fa-981b-6b4572661598-1
-00:04:20.470 --> 00:04:23.600
-engineering for example,
-or construction of a building.
-
-6332d416-ade2-46e6-a7b7-e27f436c9aca-0
-00:04:25.040 --> 00:04:27.958
-Well,
-the mental leap we need to make here from
-
-6332d416-ade2-46e6-a7b7-e27f436c9aca-1
-00:04:27.958 --> 00:04:33.006
-small projects like building a method or
-a few classes where we can easily rewrite
-
-6332d416-ade2-46e6-a7b7-e27f436c9aca-2
-00:04:33.006 --> 00:04:35.559
-the code many times until we get it right.
-
-d9a395e2-810f-427d-88cc-88a51baf1fd7-0
-00:04:35.640 --> 00:04:41.080
-Large scale systems are big projects that
-cannot be changed easily overnight.
-
-30b47d3f-0218-4182-bb4d-160c952943d8-0
-00:04:41.920 --> 00:04:46.636
-Those projects take many engineers,
-sometimes even multiple teams of
-
-30b47d3f-0218-4182-bb4d-160c952943d8-1
-00:04:46.636 --> 00:04:47.320
-engineers.
-
-82fec895-ea95-407d-bb9a-74b9ba328b81-0
-00:04:47.360 --> 00:04:51.340
-They can take months to build,
-which makes the cost of engineering time
-
-82fec895-ea95-407d-bb9a-74b9ba328b81-1
-00:04:51.340 --> 00:04:52.280
-very significant.
-
-cb6b0e75-34a4-46dd-9ddf-9e08e2388630-0
-00:04:53.000 --> 00:04:57.870
-They also often require purchasing
-hardware and sometimes software licenses
-
-cb6b0e75-34a4-46dd-9ddf-9e08e2388630-1
-00:04:57.870 --> 00:05:00.818
-upfront,
-and those projects typically involve
-
-cb6b0e75-34a4-46dd-9ddf-9e08e2388630-2
-00:05:00.818 --> 00:05:04.600
-contracts with time commitments and
-financial obligations.
-
-b297745e-6022-4dfd-bdad-87a1cc4a2c83-0
-00:05:05.200 --> 00:05:08.552
-Also,
-not delivering the product to our clients
-
-b297745e-6022-4dfd-bdad-87a1cc4a2c83-1
-00:05:08.552 --> 00:05:14.071
-or users on time may cause irreversible
-damage to our company's reputation and
-
-b297745e-6022-4dfd-bdad-87a1cc4a2c83-2
-00:05:14.071 --> 00:05:17.913
-brand image,
-So getting the requirements right upfront
-
-b297745e-6022-4dfd-bdad-87a1cc4a2c83-3
-00:05:17.913 --> 00:05:19.519
-is absolutely critical.
-
-a3165839-4353-49ad-965f-74b8b19ac11e-0
-00:05:21.000 --> 00:05:24.372
-O Now that we got the motivation for
-system requirements,
-
-a3165839-4353-49ad-965f-74b8b19ac11e-1
-00:05:24.372 --> 00:05:28.791
-let's take a step further and learn to
-classify the requirements into a few
-
-a3165839-4353-49ad-965f-74b8b19ac11e-2
-00:05:28.791 --> 00:05:33.152
-categories which have completely
-different effects on our architecture and
-
-a3165839-4353-49ad-965f-74b8b19ac11e-3
-00:05:33.152 --> 00:05:33.560
-design.
-
-a0be26bf-836e-4f93-9fe4-466637d9da4d-0
-00:05:35.280 --> 00:05:39.283
-The three main types of requirements are
-features of the system,
-
-a0be26bf-836e-4f93-9fe4-466637d9da4d-1
-00:05:39.283 --> 00:05:44.148
-also known as functional requirements,
-quality attributes which are also known
-
-a0be26bf-836e-4f93-9fe4-466637d9da4d-2
-00:05:44.148 --> 00:05:48.151
-as non functional requirements,
-and system constraints which are
-
-a0be26bf-836e-4f93-9fe4-466637d9da4d-3
-00:05:48.151 --> 00:05:51.600
-basically the limitations and boundaries
-of the system.
-
-3ecab406-ec25-47ef-ad77-629485604f9f-0
-00:05:52.280 --> 00:05:55.200
-Let's start talking about the first type
-of requirements,
-
-3ecab406-ec25-47ef-ad77-629485604f9f-1
-00:05:55.200 --> 00:05:56.560
-the features of the system.
-
-2e80621b-c722-4be7-9c39-6b995f9adb58-0
-00:05:58.440 --> 00:06:02.160
-Those requirements essentially describe
-the system's behavior.
-
-f9c54fa9-49ed-43d8-9b77-095410c83a18-0
-00:06:02.160 --> 00:06:05.874
-In other words,
-what the system we're designing actually
-
-f9c54fa9-49ed-43d8-9b77-095410c83a18-1
-00:06:05.874 --> 00:06:06.200
-does.
-
-d2b383c4-6435-4b85-83b5-327eb7572f3e-0
-00:06:06.960 --> 00:06:11.120
-Those requirements are easily tied to the
-objective of the system.
-
-413cff70-7945-426f-ba69-7d93bb412ab5-0
-00:06:11.600 --> 00:06:15.641
-They are also called functional
-requirements because they essentially
-
-413cff70-7945-426f-ba69-7d93bb412ab5-1
-00:06:15.641 --> 00:06:18.240
-describe our system as a black box
-function.
-
-b77e185f-7dde-4203-ae3e-d44026ddb1cc-0
-00:06:18.360 --> 00:06:23.038
-The user's inputs or external events are
-the inputs to that function,
-
-b77e185f-7dde-4203-ae3e-d44026ddb1cc-1
-00:06:23.038 --> 00:06:27.716
-and the result or outcome of the
-operation taken by our system is the
-
-b77e185f-7dde-4203-ae3e-d44026ddb1cc-2
-00:06:27.716 --> 00:06:29.320
-output of that function.
-
-059906a2-0717-4eda-a226-84a2601ef427-0
-00:06:31.120 --> 00:06:35.777
-It's important to point out that the
-features or functional requirements
-
-059906a2-0717-4eda-a226-84a2601ef427-1
-00:06:35.777 --> 00:06:40.370
-simply dictate the functionality of our
-system but do not determine its
-
-059906a2-0717-4eda-a226-84a2601ef427-2
-00:06:40.370 --> 00:06:41.200
-architecture.
-
-1301c3cd-b38c-47ea-a73f-f0da3b5b13af-0
-00:06:41.440 --> 00:06:44.975
-And generally any architecture can
-achieve any feature,
-
-1301c3cd-b38c-47ea-a73f-f0da3b5b13af-1
-00:06:44.975 --> 00:06:49.080
-which is what makes our job as software
-architects so difficult.
-
-3c1f9cd8-6408-4363-b894-c8ba00e853ed-0
-00:06:50.760 --> 00:06:55.838
-Now let's look at a few examples of
-features or functional requirements in
-
-3c1f9cd8-6408-4363-b894-c8ba00e853ed-1
-00:06:55.838 --> 00:07:00.578
-our hitchhiking service example,
-one functional requirement can be as
-
-3c1f9cd8-6408-4363-b894-c8ba00e853ed-2
-00:07:00.578 --> 00:07:01.120
-follows.
-
-7c0318f0-4dba-415c-aa9a-797c2587f9e4-0
-00:07:01.240 --> 00:07:07.161
-When a rider logs into our mobile app,
-the system must display a map with nearby
-
-7c0318f0-4dba-415c-aa9a-797c2587f9e4-1
-00:07:07.161 --> 00:07:09.720
-drivers within 5 miles from radius.
-
-25715e0e-c6c6-4cfd-bd6e-e2fcbff3b4c3-0
-00:07:10.360 --> 00:07:13.555
-Here,
-the input to our system is the user's
-
-25715e0e-c6c6-4cfd-bd6e-e2fcbff3b4c3-1
-00:07:13.555 --> 00:07:17.550
-login action,
-and the output is the view of a map with
-
-25715e0e-c6c6-4cfd-bd6e-e2fcbff3b4c3-2
-00:07:17.550 --> 00:07:18.640
-nearby drivers.
-
-7212bac2-7973-4cee-843b-9985eea1f366-0
-00:07:20.120 --> 00:07:21.680
-Let's take another example.
-
-19801432-971d-4254-ba8e-a74849963e3e-0
-00:07:22.560 --> 00:07:27.424
-When the ride is complete the system will
-charge the riders credit card and
-
-19801432-971d-4254-ba8e-a74849963e3e-1
-00:07:27.424 --> 00:07:31.200
-transfer that money to the driver minus
-some service fees.
-
-05bfbdc1-ab89-4d41-95b8-c00a3a970be5-0
-00:07:31.600 --> 00:07:36.646
-Here the completion of the ride is the
-input event and the transfer of the money
-
-05bfbdc1-ab89-4d41-95b8-c00a3a970be5-1
-00:07:36.646 --> 00:07:38.640
-is the outcome of the operation.
-
-d5dac052-28c8-4006-8f2c-d74a91f609b4-0
-00:07:40.320 --> 00:07:43.470
-Now let's talk about the second type of
-requirements,
-
-d5dac052-28c8-4006-8f2c-d74a91f609b4-1
-00:07:43.470 --> 00:07:46.680
-the quality attributes or non functional
-requirements.
-
-85f15c32-6c5d-4d9e-8d63-c0cbaae1c67d-0
-00:07:48.520 --> 00:07:53.169
-The quality attributes are properties
-that the system must have as opposed to
-
-85f15c32-6c5d-4d9e-8d63-c0cbaae1c67d-1
-00:07:53.169 --> 00:07:54.600
-what the system must do.
-
-6d1a9f37-1303-4774-aeae-13cb4fbb2bca-0
-00:07:55.000 --> 00:08:00.273
-Examples of such qualities include
-scalability, availability, reliability,
-
-6d1a9f37-1303-4774-aeae-13cb4fbb2bca-1
-00:08:00.273 --> 00:08:04.352
-security, performance,
-and this list can go on and change
-
-6d1a9f37-1303-4774-aeae-13cb4fbb2bca-2
-00:08:04.352 --> 00:08:06.040
-depending on the system.
-
-9d289a1a-94c8-4a16-b73f-f6c02d0affb5-0
-00:08:07.320 --> 00:08:09.982
-In contrast to the functional
-requirements,
-
-9d289a1a-94c8-4a16-b73f-f6c02d0affb5-1
-00:08:09.982 --> 00:08:14.520
-the quality attributes do dictate the
-software architecture of our system.
-
-1ee758fa-2a0b-430e-85fe-c58bd9f6d9cc-0
-00:08:15.080 --> 00:08:19.531
-Another way to look at this is the
-software architecture defines the system
-
-1ee758fa-2a0b-430e-85fe-c58bd9f6d9cc-1
-00:08:19.531 --> 00:08:23.807
-quality attributes and different
-architectures provide us with different
-
-1ee758fa-2a0b-430e-85fe-c58bd9f6d9cc-2
-00:08:23.807 --> 00:08:24.920
-quality attributes.
-
-45e19ecf-be52-4870-ac88-fa264de223dd-0
-00:08:26.200 --> 00:08:29.560
-The last type of requirements is system
-constraints.
-
-34046799-90f8-45ee-b846-8a5e0347c88c-0
-00:08:31.400 --> 00:08:35.071
-A few examples include strict deadlines,
-limited budget,
-
-34046799-90f8-45ee-b846-8a5e0347c88c-1
-00:08:35.071 --> 00:08:39.000
-or a small number of engineers that can
-work on our project.
-
-79e79708-035c-42f1-97ab-6a2d1ff1c222-0
-00:08:39.080 --> 00:08:44.169
-Such constraints may force us to make
-certain trade-offs and sacrifices in our
-
-79e79708-035c-42f1-97ab-6a2d1ff1c222-1
-00:08:44.169 --> 00:08:49.130
-design and shift us towards certain
-software architectural decisions that we
-
-79e79708-035c-42f1-97ab-6a2d1ff1c222-2
-00:08:49.130 --> 00:08:52.480
-would not make if we didn't have those
-constraints.
-
-cf6a3811-9c67-4473-a40e-186fd76e1251-0
-00:08:54.160 --> 00:08:58.373
-The three types of requirements that we
-learned in this lecture are also
-
-cf6a3811-9c67-4473-a40e-186fd76e1251-1
-00:08:58.373 --> 00:09:02.760
-sometimes referred to as architectural
-drivers because they essentially Dr.
-
-5c4017f6-a6dd-40ef-aa6f-26557b0dd69c-0
-00:09:02.760 --> 00:09:07.335
-our architectural decisions from an
-infinite universe of possibilities
-
-5c4017f6-a6dd-40ef-aa6f-26557b0dd69c-1
-00:09:07.335 --> 00:09:10.880
-towards one solution that satisfies our
-clients needs.
-
-12d94011-44eb-4367-b278-814d6288bdf0-0
-00:09:12.480 --> 00:09:15.670
-In this lecture,
-we learned about the importance of
-
-12d94011-44eb-4367-b278-814d6288bdf0-1
-00:09:15.670 --> 00:09:18.800
-requirements in the design of large scale
-systems.
-
-18e0d85f-d852-4b06-b906-3ecb8f63ad6d-0
-00:09:19.160 --> 00:09:23.066
-We discussed a few challenges of
-gathering those requirements,
-
-18e0d85f-d852-4b06-b906-3ecb8f63ad6d-1
-00:09:23.066 --> 00:09:27.902
-such as the large scope and ambiguity
-that we may not be familiar with coming
-
-18e0d85f-d852-4b06-b906-3ecb8f63ad6d-2
-00:09:27.902 --> 00:09:30.320
-from a smaller scale programming world.
-
-f902b7e3-dcf1-4dc4-a27e-34e2ac36db87-0
-00:09:30.920 --> 00:09:34.029
-After that,
-we talked about the risks of not getting
-
-f902b7e3-dcf1-4dc4-a27e-34e2ac36db87-1
-00:09:34.029 --> 00:09:36.200
-those requirements correctly upfront.
-
-516ab18d-3bb7-4b21-afbb-e3345c42f207-0
-00:09:36.360 --> 00:09:39.203
-And finally,
-we classified those requirements into
-
-516ab18d-3bb7-4b21-afbb-e3345c42f207-1
-00:09:39.203 --> 00:09:42.213
-three groups,
-which are also called the architectural
-
-516ab18d-3bb7-4b21-afbb-e3345c42f207-2
-00:09:42.213 --> 00:09:43.440
-drivers of the system.
-
-3e97ec91-d3c7-42aa-9d13-0505fb1424df-0
-00:09:43.960 --> 00:09:48.142
-Those three groups are the features of
-the system, the quality attributes,
-
-3e97ec91-d3c7-42aa-9d13-0505fb1424df-1
-00:09:48.142 --> 00:09:49.760
-and the system's constraints.
-
-8e40a684-106d-4c6c-903b-57bc8c2d28e0-0
-00:09:51.280 --> 00:09:52.960
-See you guys all in the next lecture.
+1
+00:00:01,540 --> 00:00:08,350
+Now let's talk about another software architecture pattern that can help us scale a complex flow of
+
+2
+00:00:08,350 --> 00:00:09,790
+business transactions.
+
+3
+00:00:09,820 --> 00:00:16,000
+This pattern is called choreography and is a kind of a sibling of the orchestrator pattern.
+
+4
+00:00:16,030 --> 00:00:22,630
+The problem statement here is the same as the one we covered in the lecture on the orchestration pattern.
+
+5
+00:00:22,930 --> 00:00:30,040
+And that is we have a collection of microservices where each microservice is responsible for a particular
+
+6
+00:00:30,040 --> 00:00:33,370
+type of operations or a specific domain.
+
+7
+00:00:33,430 --> 00:00:40,030
+The microservices are completely decoupled from each other and are potentially not even aware of each
+
+8
+00:00:40,030 --> 00:00:45,910
+other based on an external trigger, such as an event or a request from a user.
+
+9
+00:00:45,940 --> 00:00:51,430
+We need to complete a flow of transactions that span multiple microservices.
+
+10
+00:00:51,700 --> 00:00:58,720
+One solution we offered was the execution orchestrator pattern, where we have a central service that
+
+11
+00:00:58,720 --> 00:01:05,260
+executes a flow by communicating with the relevant services until the flow is complete.
+
+12
+00:01:05,349 --> 00:01:11,630
+While the orchestration pattern is arguably the most intuitive and easiest to implement.
+
+13
+00:01:11,650 --> 00:01:13,380
+It has a few drawbacks.
+
+14
+00:01:13,390 --> 00:01:19,180
+One of the drawbacks is the tight coupling to all the microservices in the system.
+
+15
+00:01:19,210 --> 00:01:26,920
+Remember that one of the reasons we wanted to move to microservices architecture was to speed up development
+
+16
+00:01:26,920 --> 00:01:30,100
+by decoupling the microservices from each other.
+
+17
+00:01:30,800 --> 00:01:37,070
+Now imagine that the team of Service A is working on some modifications to its service.
+
+18
+00:01:37,490 --> 00:01:45,260
+At the same time, the theme of Service B is also making changes to their service and the new team is
+
+19
+00:01:45,260 --> 00:01:52,340
+building a new service called Service C Now because the orchestrator service is tightly coupled with
+
+20
+00:01:52,340 --> 00:01:59,390
+all those services, all the three teams need to coordinate with each other to make sure that changes
+
+21
+00:01:59,390 --> 00:02:01,790
+they are making to the orchestration service.
+
+22
+00:02:01,790 --> 00:02:03,560
+Don't break any flow.
+
+23
+00:02:04,100 --> 00:02:11,090
+And with three teams working on the same code base at the same time, it starts feeling a lot like the
+
+24
+00:02:11,090 --> 00:02:14,030
+monolithic application we moved away from.
+
+25
+00:02:14,210 --> 00:02:22,070
+This situation is a big issue that many companies suffer from at one point or another and is often referred
+
+26
+00:02:22,070 --> 00:02:25,370
+to as a distributed monolith anti pattern.
+
+27
+00:02:25,610 --> 00:02:32,360
+In this anti pattern, we get all the problems of the monolithic architecture and all the issues of
+
+28
+00:02:32,360 --> 00:02:36,500
+the microservices architecture, but without any benefits.
+
+29
+00:02:36,500 --> 00:02:43,220
+So when we have frequent changes happening in multiple microservices, there's a better software architecture
+
+30
+00:02:43,220 --> 00:02:45,860
+pattern called choreography.
+
+31
+00:02:45,860 --> 00:02:53,810
+And the choreography pattern, we remove the smart orchestrator service and replace it with a dumb distributed
+
+32
+00:02:53,810 --> 00:02:59,840
+message cue or message broker that stores all the incoming events at the same time.
+
+33
+00:02:59,870 --> 00:03:06,380
+All the microservices in our system subscribe to relevant events from the message broker where they
+
+34
+00:03:06,380 --> 00:03:07,550
+need to get involved.
+
+35
+00:03:07,550 --> 00:03:14,960
+Once the microservices processes and incoming event, it emits a result as another event to a different
+
+36
+00:03:14,960 --> 00:03:22,760
+channel or topic, which in turn triggers another servers to take an action and produce another event.
+
+37
+00:03:22,790 --> 00:03:29,150
+This chain of events keeps going all the way until the completion of the flow of transactions.
+
+38
+00:03:29,240 --> 00:03:34,220
+The analogy this pattern is using is a sequence of steps in a dance.
+
+39
+00:03:34,520 --> 00:03:41,690
+So just like a group of dancers, the microservices are performing their steps when it's their turn
+
+40
+00:03:41,720 --> 00:03:45,470
+to complete the entire flow of operations as a group.
+
+41
+00:03:45,650 --> 00:03:52,820
+The advantages of this pattern in microservices architecture are pretty evident in terms of loose coupling
+
+42
+00:03:52,820 --> 00:03:54,200
+between services.
+
+43
+00:03:54,200 --> 00:04:01,340
+Since the communication happens through a synchronous events, we can easily make changes and add or
+
+44
+00:04:01,340 --> 00:04:05,340
+remove services completely independently from each other.
+
+45
+00:04:05,360 --> 00:04:14,060
+This allows us to scale any flow to as many services as we want, and also we can scale our organization
+
+46
+00:04:14,060 --> 00:04:22,400
+much easier since we can have many teams operating autonomously with very little friction in the cloud
+
+47
+00:04:22,400 --> 00:04:23,450
+environment.
+
+48
+00:04:23,450 --> 00:04:31,070
+All or some of those microservices can be implemented as function as a service, which means they don't
+
+49
+00:04:31,070 --> 00:04:34,130
+consume any resources until an event.
+
+50
+00:04:34,130 --> 00:04:40,670
+They're interested in triggers their execution, and if they don't consume any resources, we don't
+
+51
+00:04:40,670 --> 00:04:45,210
+have to pay for them, which makes our system very cost effective.
+
+52
+00:04:45,230 --> 00:04:52,790
+On the other hand, if one service needs to handle frequent events, it can scale automatically using
+
+53
+00:04:52,790 --> 00:04:56,930
+out of scaling policies, just like we learned in the previous lectures.
+
+54
+00:04:56,960 --> 00:05:00,080
+Now let's talk about the downside of this pattern.
+
+55
+00:05:00,080 --> 00:05:07,310
+Since we don't have a centralized orchestrator, it is a lot harder to troubleshoot if things go wrong
+
+56
+00:05:07,340 --> 00:05:09,650
+as part of the execution of a flow.
+
+57
+00:05:10,310 --> 00:05:16,760
+It's also very hard to trace the flow of events since all of those events are asynchronous.
+
+58
+00:05:16,760 --> 00:05:21,980
+So those are just a few things to keep in mind when considering using this pattern.
+
+59
+00:05:22,310 --> 00:05:28,580
+Now that we have a good understanding of the choreography pattern on a high level, let's walk through
+
+60
+00:05:28,580 --> 00:05:33,440
+a real life example where the choreography architecture pattern can be used.
+
+61
+00:05:33,830 --> 00:05:37,430
+The example we're going to use is a job search service.
+
+62
+00:05:37,550 --> 00:05:45,500
+In the service, a candidate looking for a job can simply go to our website, fill out a form, sharing
+
+63
+00:05:45,500 --> 00:05:50,810
+some information about themselves, and also upload their resume to our system.
+
+64
+00:05:50,810 --> 00:05:59,510
+Once they do that, their information is ingested into our system and starts automatically and continuously
+
+65
+00:05:59,540 --> 00:06:03,200
+looking for job openings where they can be a good match.
+
+66
+00:06:03,410 --> 00:06:09,920
+Now, based on the candidate's preference, they can get notified about those job opportunities as they
+
+67
+00:06:09,920 --> 00:06:14,420
+arrive or as a daily or weekly feed to their email.
+
+68
+00:06:14,600 --> 00:06:21,860
+If one of those job opportunities looks good, the candidate simply opens the email and clicks the apply
+
+69
+00:06:21,860 --> 00:06:22,450
+button.
+
+70
+00:06:22,460 --> 00:06:29,780
+So let's see how we can design the main scenario of signing up for our service using the choreography.
+
+71
+00:06:30,540 --> 00:06:37,890
+After the user completes the form and uploads their resume using our front end, all that data is sent
+
+72
+00:06:37,890 --> 00:06:39,450
+to the candidate service.
+
+73
+00:06:40,080 --> 00:06:46,830
+The candidate service takes all the information about the new candidate and stores it in a database.
+
+74
+00:06:47,190 --> 00:06:54,480
+After that, it emits a new event that triggers an email confirmation cloud function, which sends an
+
+75
+00:06:54,480 --> 00:06:56,730
+email confirmation to the candidate.
+
+76
+00:06:57,000 --> 00:07:04,920
+This email confirmation informs them that the registration and resume were received and we are now actively
+
+77
+00:07:04,920 --> 00:07:06,510
+looking for a job for them.
+
+78
+00:07:06,780 --> 00:07:14,400
+The same event that trigger the email confirmation function is also consumed by the skills parser service.
+
+79
+00:07:14,640 --> 00:07:22,110
+This service passes all the information from the resume as well as the data provided by the candidate
+
+80
+00:07:22,110 --> 00:07:29,430
+and builds a model of what skills the candidate has, as well as their level of experience with those
+
+81
+00:07:29,430 --> 00:07:30,120
+skills.
+
+82
+00:07:30,660 --> 00:07:37,920
+Once that information is extracted, they're stored in a database and then the skills parser service
+
+83
+00:07:37,920 --> 00:07:45,180
+emits a new event that triggers the job search service to search the database of open jobs for that
+
+84
+00:07:45,180 --> 00:07:45,810
+user.
+
+85
+00:07:46,470 --> 00:07:53,130
+When the search is done, the results are emitted as another event which is consumed by the candidate
+
+86
+00:07:53,130 --> 00:07:55,290
+service and the email service.
+
+87
+00:07:55,680 --> 00:08:02,010
+The candidate service adds those jobs to the candidate's record so the candidate can see them when they
+
+88
+00:08:02,010 --> 00:08:02,820
+log in.
+
+89
+00:08:03,120 --> 00:08:09,400
+And the email service can either send the new jobs to the candidate or do nothing.
+
+90
+00:08:09,420 --> 00:08:15,300
+If the candidate indicated that they want to get only a daily or weekly digest.
+
+91
+00:08:15,330 --> 00:08:23,280
+So as we can see, the entire flow of execution happens through asynchronous communication among services
+
+92
+00:08:23,280 --> 00:08:27,240
+without any central entity to orchestrate the flow.
+
+93
+00:08:27,420 --> 00:08:33,900
+By using this pattern, we reduce the cost and overhead of having the orchestrator service.
+
+94
+00:08:34,020 --> 00:08:40,470
+And additionally, since all the events are delivered through a message broker, even if one of the
+
+95
+00:08:40,470 --> 00:08:45,960
+services was done temporarily, it did not result in loss of messages.
+
+96
+00:08:45,960 --> 00:08:52,680
+When that service comes back online, it can consume those events from the message broker as if nothing
+
+97
+00:08:52,680 --> 00:08:53,340
+happened.
+
+98
+00:08:53,370 --> 00:09:00,120
+Now another benefit is if we want to modify the sign up flow, we can do it very easily.
+
+99
+00:09:00,420 --> 00:09:07,440
+For example, if we want to add a new service that notifies companies about the new candidates with
+
+100
+00:09:07,440 --> 00:09:14,430
+certain valuable skills, we can easily just add that service and let it subscribe to relevant events
+
+101
+00:09:14,430 --> 00:09:15,870
+from the message broker.
+
+102
+00:09:16,050 --> 00:09:22,950
+With this addition, we don't have to touch any other service which keeps our system loosely coupled.
+
+103
+00:09:23,370 --> 00:09:31,350
+This way we can scale our organization and allow running complex and ever evolving flows very easily.
+
+104
+00:09:31,380 --> 00:09:38,280
+On the flip side, as we already mentioned, if something goes wrong, it will be very hard for us to
+
+105
+00:09:38,280 --> 00:09:39,240
+troubleshoot it.
+
+106
+00:09:39,270 --> 00:09:46,620
+For example, we may get a complaint from a candidate that they never get any emails about new jobs.
+
+107
+00:09:46,860 --> 00:09:55,020
+This issue here can be in any one of the services that participate in the sign up flow or in another
+
+108
+00:09:55,020 --> 00:10:00,690
+flow that continuously perform searches for a job for that particular candidate.
+
+109
+00:10:01,020 --> 00:10:07,680
+Now, in an attempt to catch issues before they go into production, we will also need to write a lot
+
+110
+00:10:07,680 --> 00:10:12,470
+of relatively more complex integration tests when using choreography.
+
+111
+00:10:12,480 --> 00:10:16,980
+And that becomes a bigger challenge as we add more services.
+
+112
+00:10:17,250 --> 00:10:24,070
+So the choreography pattern is more suitable for simpler flows that have fewer services.
+
+113
+00:10:24,090 --> 00:10:28,830
+So before we move on to the next exciting software architecture pattern.
+
+114
+00:10:29,010 --> 00:10:31,740
+Let's quickly summarize what we learned today.
+
+115
+00:10:31,770 --> 00:10:38,460
+We pointed out some of the drawbacks of the execution orchestrator pattern, which included the tight
+
+116
+00:10:38,460 --> 00:10:42,750
+coupling among the services through the orchestrator service.
+
+117
+00:10:42,780 --> 00:10:47,100
+We then proposed another architecture pattern called choreography.
+
+118
+00:10:47,250 --> 00:10:54,570
+In this pattern, all the microservices work together as a dance team, following a sequence of steps
+
+119
+00:10:54,570 --> 00:11:00,990
+to complete a certain flow, and all the communication among the services is typically done through
+
+120
+00:11:00,990 --> 00:11:02,550
+asynchronous events.
+
+121
+00:11:02,730 --> 00:11:10,650
+Finally, we concluded with a simple flow of signing up a new user for a job search, which we designed
+
+122
+00:11:10,650 --> 00:11:12,390
+using the choreography pattern.
+
+123
+00:11:12,540 --> 00:11:20,100
+And we also mentioned that while this pattern is very scalable and cost effective, it may get a little
+
+124
+00:11:20,100 --> 00:11:22,710
+challenging when things go wrong.
+
+125
+00:11:22,710 --> 00:11:26,400
+And we need to pinpoint a problem with a particular service.
+
+126
+00:11:26,580 --> 00:11:28,470
+I'll see you guys in the next lecture.

@@ -1,281 +1,252 @@
-WEBVTT
-Welcome back.
-In this lecture we're going to talk about
-gathering, classifying,
-and analyzing requirements as the first
-step in designing a large scale system.
-But before we get into any details,
-let's first get some motivation.
-System requirements is just a formal word
-for figuring out and narrowing down what
-exactly we need to build for our client.
-As software engineers,
-we shouldn't be new to receiving formal
-requirements for the task we need to
-accomplish.
-But when it comes to the design of a
-large scale system,
-there are a few differences from the
-usual requirements we are used to getting
-for implementing a method, an algorithm,
-or a class.
-The first difference is the scope and
-level of obstruction of the requirements
-and especially the solution we need to
-design.
-For example,
-when we're tasked to implement a method
-or an algorithm in an existing code base,
-we typically know what the input and
-output look like.
-We're also somewhat limited to the
-programming languages we're going to use.
-As we go up to a more high level
-obstruction, like designing a Class,
-A module, a library, or an application,
-the range of possible ways to solve the
-problem becomes bigger and bigger as we
-have more degrees of freedom.
-Also,
-the scope of the problem becomes so high
-that it's hard for us to even visualize
-the implementation.
-So when we are asked to design an entire
-system,
-we may feel so overwhelmed that we may
-not even know where to begin.
-For example,
-imagine you're asked to design a file
-storage system,
-a video streaming solution,
-or a ride sharing service that needs to
-scale to serving millions of users per
-day.
-It's hard not to get overwhelmed by such
-a task.
-The second challenge and difference from
-what we're normally used to is the level
-of ambiguity.
-The reason for this ambiguity is twofold.
-First of all,
-in many cases the requirements are not
-even coming from an engineer,
-and sometimes they're not even coming
-from a very technical person.
-So the client or product manager may ask
-for something very high level,
-and it's our responsibility to transform
-those requests into precise and technical
-requirements.
-Those technical requirements will serve
-as the foundation for building our
-software architecture.
-The second reason for the high level of
-ambiguity is getting the specific
-requirements is already part of the
-solution.
-This may seem a little odd for us at
-first,
-but we have to remember that the client
-doesn't always know exactly what they
-need.
-The only thing they know for sure is the
-problem they need to solve.
-To demonstrate this,
-let's take a specific example.
-Let's say we're asked to design A
-hitchhiking service that allows people to
-join drivers that are already driving on
-a particular route and are willing to
-take passengers on their way for a fee.
-That may be all the requirements we get
-from the client and it is up to us to ask
-things like is it going to be a real time
-service or the riders will have to
-contact the drivers in advance?
-Is it going to be a mobile or desktop
-experience or maybe both?
-Are we going to enable payment through
-our system or the riders will have to pay
-the drivers directly?
-In some cases,
-the client may not even know the answer
-to those right away until we actually ask
-those questions.
-That is why in most system design
-interviews,
-one of the things being tested is our
-ability to clarify and ask those
-questions ahead of time.
-Because as we can see,
-asking those questions and gathering
-those requirements is already part of the
-solution,
-and it greatly narrows down what we need
-to design and build Now.
-What happens if we don't get all the
-requirements right?
-Can't we just do it incrementally?
-Why can't we simply build something and
-see if it satisfies the client?
-And if it doesn't, no big deal,
-we can just fix it, can't we?
-After all,
-we're not building a building or a bridge
-here.
-There's seemingly no big cost of
-materials and software like in mechanical
-engineering for example,
-or construction of a building.
-Well,
-the mental leap we need to make here from
-small projects like building a method or
-a few classes where we can easily rewrite
-the code many times until we get it right.
-Large scale systems are big projects that
-cannot be changed easily overnight.
-Those projects take many engineers,
-sometimes even multiple teams of
-engineers.
-They can take months to build,
-which makes the cost of engineering time
-very significant.
-They also often require purchasing
-hardware and sometimes software licenses
-upfront,
-and those projects typically involve
-contracts with time commitments and
-financial obligations.
-Also,
-not delivering the product to our clients
-or users on time may cause irreversible
-damage to our company's reputation and
-brand image,
-So getting the requirements right upfront
-is absolutely critical.
-O Now that we got the motivation for
-system requirements,
-let's take a step further and learn to
-classify the requirements into a few
-categories which have completely
-different effects on our architecture and
-design.
-The three main types of requirements are
-features of the system,
-also known as functional requirements,
-quality attributes which are also known
-as non functional requirements,
-and system constraints which are
-basically the limitations and boundaries
-of the system.
-Let's start talking about the first type
-of requirements,
-the features of the system.
-Those requirements essentially describe
-the system's behavior.
-In other words,
-what the system we're designing actually
-does.
-Those requirements are easily tied to the
-objective of the system.
-They are also called functional
-requirements because they essentially
-describe our system as a black box
-function.
-The user's inputs or external events are
-the inputs to that function,
-and the result or outcome of the
-operation taken by our system is the
-output of that function.
-It's important to point out that the
-features or functional requirements
-simply dictate the functionality of our
-system but do not determine its
-architecture.
-And generally any architecture can
-achieve any feature,
-which is what makes our job as software
-architects so difficult.
-Now let's look at a few examples of
-features or functional requirements in
-our hitchhiking service example,
-one functional requirement can be as
-follows.
-When a rider logs into our mobile app,
-the system must display a map with nearby
-drivers within 5 miles from radius.
-Here,
-the input to our system is the user's
-login action,
-and the output is the view of a map with
-nearby drivers.
-Let's take another example.
-When the ride is complete the system will
-charge the riders credit card and
-transfer that money to the driver minus
-some service fees.
-Here the completion of the ride is the
-input event and the transfer of the money
-is the outcome of the operation.
-Now let's talk about the second type of
-requirements,
-the quality attributes or non functional
-requirements.
-The quality attributes are properties
-that the system must have as opposed to
-what the system must do.
-Examples of such qualities include
-scalability, availability, reliability,
-security, performance,
-and this list can go on and change
-depending on the system.
-In contrast to the functional
-requirements,
-the quality attributes do dictate the
-software architecture of our system.
-Another way to look at this is the
-software architecture defines the system
-quality attributes and different
-architectures provide us with different
-quality attributes.
-The last type of requirements is system
-constraints.
-A few examples include strict deadlines,
-limited budget,
-or a small number of engineers that can
-work on our project.
-Such constraints may force us to make
-certain trade-offs and sacrifices in our
-design and shift us towards certain
-software architectural decisions that we
-would not make if we didn't have those
-constraints.
-The three types of requirements that we
-learned in this lecture are also
-sometimes referred to as architectural
-drivers because they essentially Dr.
-our architectural decisions from an
-infinite universe of possibilities
-towards one solution that satisfies our
-clients needs.
-In this lecture,
-we learned about the importance of
-requirements in the design of large scale
-systems.
-We discussed a few challenges of
-gathering those requirements,
-such as the large scope and ambiguity
-that we may not be familiar with coming
-from a smaller scale programming world.
-After that,
-we talked about the risks of not getting
-those requirements correctly upfront.
-And finally,
-we classified those requirements into
-three groups,
-which are also called the architectural
-drivers of the system.
-Those three groups are the features of
-the system, the quality attributes,
-and the system's constraints.
-See you guys all in the next lecture.
+1
+Now let's talk about another software architecture pattern that can help us scale a complex flow of
+2
+business transactions.
+3
+This pattern is called choreography and is a kind of a sibling of the orchestrator pattern.
+4
+The problem statement here is the same as the one we covered in the lecture on the orchestration pattern.
+5
+And that is we have a collection of microservices where each microservice is responsible for a particular
+6
+type of operations or a specific domain.
+7
+The microservices are completely decoupled from each other and are potentially not even aware of each
+8
+other based on an external trigger, such as an event or a request from a user.
+9
+We need to complete a flow of transactions that span multiple microservices.
+10
+One solution we offered was the execution orchestrator pattern, where we have a central service that
+11
+executes a flow by communicating with the relevant services until the flow is complete.
+12
+While the orchestration pattern is arguably the most intuitive and easiest to implement.
+13
+It has a few drawbacks.
+14
+One of the drawbacks is the tight coupling to all the microservices in the system.
+15
+Remember that one of the reasons we wanted to move to microservices architecture was to speed up development
+16
+by decoupling the microservices from each other.
+17
+Now imagine that the team of Service A is working on some modifications to its service.
+18
+At the same time, the theme of Service B is also making changes to their service and the new team is
+19
+building a new service called Service C Now because the orchestrator service is tightly coupled with
+20
+all those services, all the three teams need to coordinate with each other to make sure that changes
+21
+they are making to the orchestration service.
+22
+Don't break any flow.
+23
+And with three teams working on the same code base at the same time, it starts feeling a lot like the
+24
+monolithic application we moved away from.
+25
+This situation is a big issue that many companies suffer from at one point or another and is often referred
+26
+to as a distributed monolith anti pattern.
+27
+In this anti pattern, we get all the problems of the monolithic architecture and all the issues of
+28
+the microservices architecture, but without any benefits.
+29
+So when we have frequent changes happening in multiple microservices, there's a better software architecture
+30
+pattern called choreography.
+31
+And the choreography pattern, we remove the smart orchestrator service and replace it with a dumb distributed
+32
+message cue or message broker that stores all the incoming events at the same time.
+33
+All the microservices in our system subscribe to relevant events from the message broker where they
+34
+need to get involved.
+35
+Once the microservices processes and incoming event, it emits a result as another event to a different
+36
+channel or topic, which in turn triggers another servers to take an action and produce another event.
+37
+This chain of events keeps going all the way until the completion of the flow of transactions.
+38
+The analogy this pattern is using is a sequence of steps in a dance.
+39
+So just like a group of dancers, the microservices are performing their steps when it's their turn
+40
+to complete the entire flow of operations as a group.
+41
+The advantages of this pattern in microservices architecture are pretty evident in terms of loose coupling
+42
+between services.
+43
+Since the communication happens through a synchronous events, we can easily make changes and add or
+44
+remove services completely independently from each other.
+45
+This allows us to scale any flow to as many services as we want, and also we can scale our organization
+46
+much easier since we can have many teams operating autonomously with very little friction in the cloud
+47
+environment.
+48
+All or some of those microservices can be implemented as function as a service, which means they don't
+49
+consume any resources until an event.
+50
+They're interested in triggers their execution, and if they don't consume any resources, we don't
+51
+have to pay for them, which makes our system very cost effective.
+52
+On the other hand, if one service needs to handle frequent events, it can scale automatically using
+53
+out of scaling policies, just like we learned in the previous lectures.
+54
+Now let's talk about the downside of this pattern.
+55
+Since we don't have a centralized orchestrator, it is a lot harder to troubleshoot if things go wrong
+56
+as part of the execution of a flow.
+57
+It's also very hard to trace the flow of events since all of those events are asynchronous.
+58
+So those are just a few things to keep in mind when considering using this pattern.
+59
+Now that we have a good understanding of the choreography pattern on a high level, let's walk through
+60
+a real life example where the choreography architecture pattern can be used.
+61
+The example we're going to use is a job search service.
+62
+In the service, a candidate looking for a job can simply go to our website, fill out a form, sharing
+63
+some information about themselves, and also upload their resume to our system.
+64
+Once they do that, their information is ingested into our system and starts automatically and continuously
+65
+looking for job openings where they can be a good match.
+66
+Now, based on the candidate's preference, they can get notified about those job opportunities as they
+67
+arrive or as a daily or weekly feed to their email.
+68
+If one of those job opportunities looks good, the candidate simply opens the email and clicks the apply
+69
+button.
+70
+So let's see how we can design the main scenario of signing up for our service using the choreography.
+71
+After the user completes the form and uploads their resume using our front end, all that data is sent
+72
+to the candidate service.
+73
+The candidate service takes all the information about the new candidate and stores it in a database.
+74
+After that, it emits a new event that triggers an email confirmation cloud function, which sends an
+75
+email confirmation to the candidate.
+76
+This email confirmation informs them that the registration and resume were received and we are now actively
+77
+looking for a job for them.
+78
+The same event that trigger the email confirmation function is also consumed by the skills parser service.
+79
+This service passes all the information from the resume as well as the data provided by the candidate
+80
+and builds a model of what skills the candidate has, as well as their level of experience with those
+81
+skills.
+82
+Once that information is extracted, they're stored in a database and then the skills parser service
+83
+emits a new event that triggers the job search service to search the database of open jobs for that
+84
+user.
+85
+When the search is done, the results are emitted as another event which is consumed by the candidate
+86
+service and the email service.
+87
+The candidate service adds those jobs to the candidate's record so the candidate can see them when they
+88
+log in.
+89
+And the email service can either send the new jobs to the candidate or do nothing.
+90
+If the candidate indicated that they want to get only a daily or weekly digest.
+91
+So as we can see, the entire flow of execution happens through asynchronous communication among services
+92
+without any central entity to orchestrate the flow.
+93
+By using this pattern, we reduce the cost and overhead of having the orchestrator service.
+94
+And additionally, since all the events are delivered through a message broker, even if one of the
+95
+services was done temporarily, it did not result in loss of messages.
+96
+When that service comes back online, it can consume those events from the message broker as if nothing
+97
+happened.
+98
+Now another benefit is if we want to modify the sign up flow, we can do it very easily.
+99
+For example, if we want to add a new service that notifies companies about the new candidates with
+100
+certain valuable skills, we can easily just add that service and let it subscribe to relevant events
+101
+from the message broker.
+102
+With this addition, we don't have to touch any other service which keeps our system loosely coupled.
+103
+This way we can scale our organization and allow running complex and ever evolving flows very easily.
+104
+On the flip side, as we already mentioned, if something goes wrong, it will be very hard for us to
+105
+troubleshoot it.
+106
+For example, we may get a complaint from a candidate that they never get any emails about new jobs.
+107
+This issue here can be in any one of the services that participate in the sign up flow or in another
+108
+flow that continuously perform searches for a job for that particular candidate.
+109
+Now, in an attempt to catch issues before they go into production, we will also need to write a lot
+110
+of relatively more complex integration tests when using choreography.
+111
+And that becomes a bigger challenge as we add more services.
+112
+So the choreography pattern is more suitable for simpler flows that have fewer services.
+113
+So before we move on to the next exciting software architecture pattern.
+114
+Let's quickly summarize what we learned today.
+115
+We pointed out some of the drawbacks of the execution orchestrator pattern, which included the tight
+116
+coupling among the services through the orchestrator service.
+117
+We then proposed another architecture pattern called choreography.
+118
+In this pattern, all the microservices work together as a dance team, following a sequence of steps
+119
+to complete a certain flow, and all the communication among the services is typically done through
+120
+asynchronous events.
+121
+Finally, we concluded with a simple flow of signing up a new user for a job search, which we designed
+122
+using the choreography pattern.
+123
+And we also mentioned that while this pattern is very scalable and cost effective, it may get a little
+124
+challenging when things go wrong.
+125
+And we need to pinpoint a problem with a particular service.
+126
+I'll see you guys in the next lecture.

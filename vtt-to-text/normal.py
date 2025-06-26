@@ -13,7 +13,7 @@ def remove_timestamps(vtt_file_path, output_file_path):
         text_content.append(line.strip())
 
     # Join the text content into a single paragraph
-    paragraph = ' '.join(text_content)
+    paragraph = '\n'.join(text_content)
 
     # Write the output to a new file
     with open(output_file_path, 'w', encoding='utf-8') as output_file:
