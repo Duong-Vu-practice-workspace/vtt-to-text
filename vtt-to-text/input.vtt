@@ -1,0 +1,743 @@
+WEBVTT
+
+6d6e7257-69fb-41b3-9148-1983308e3fc7-0
+00:00:00.320 --> 00:00:01.720
+Welcome to the first lecture.
+
+b10a590d-484e-4d89-b3d7-af5c8436c221-0
+00:00:02.920 --> 00:00:07.887
+In this lecture we're going to get an
+introduction to software architecture and
+
+b10a590d-484e-4d89-b3d7-af5c8436c221-1
+00:00:07.887 --> 00:00:11.240
+also learn why software architecture is
+so important.
+
+3c781ead-18d1-4e3a-90c6-dd8392c9d158-0
+00:00:11.600 --> 00:00:14.899
+After that,
+we will define more formally and explain
+
+3c781ead-18d1-4e3a-90c6-dd8392c9d158-1
+00:00:14.899 --> 00:00:19.320
+what software architecture means for us
+in the context of this course.
+
+6fece3d3-f290-45a3-9c32-173e7bc5c8fd-0
+00:00:19.880 --> 00:00:23.385
+And finally,
+we'll discuss where software architecture
+
+6fece3d3-f290-45a3-9c32-173e7bc5c8fd-1
+00:00:23.385 --> 00:00:27.400
+fits in the overall picture of the
+software development cycle.
+
+b1a31200-a084-4573-9cf0-49b941143a91-0
+00:00:28.480 --> 00:00:32.791
+So let's start with some analogies from
+outside the software world,
+
+b1a31200-a084-4573-9cf0-49b941143a91-1
+00:00:32.791 --> 00:00:37.800
+which will give us a good intuition of
+what software architecture means to us.
+
+62bb2b1f-1cbf-42b2-9592-e36beb5c0e39-0
+00:00:38.840 --> 00:00:43.380
+Everything we build has a structure,
+whether we know about it or not,
+
+62bb2b1f-1cbf-42b2-9592-e36beb5c0e39-1
+00:00:43.380 --> 00:00:48.440
+and whether we thought about it ahead of
+time or arrived at it spontaneously.
+
+3cd2d90d-a6e0-44c0-9066-03271ce537dc-0
+00:00:49.200 --> 00:00:54.076
+The more we invest in building a product,
+the harder it becomes to change its
+
+3cd2d90d-a6e0-44c0-9066-03271ce537dc-1
+00:00:54.076 --> 00:00:55.640
+structure after the fact.
+
+eadb3115-5e23-44b7-b939-546816652368-0
+00:00:56.000 --> 00:01:01.040
+But what is the importance of a structure
+and why would we want to change it at all
+
+eadb3115-5e23-44b7-b939-546816652368-1
+00:01:01.040 --> 00:01:01.880
+in the future?
+
+f49d627c-19a5-4287-8b4b-cc7d414b0c53-0
+00:01:02.520 --> 00:01:06.601
+Well, The thing is,
+the structure of our system describes
+
+f49d627c-19a5-4287-8b4b-cc7d414b0c53-1
+00:01:06.601 --> 00:01:10.120
+both the intent of our product and its
+qualities.
+
+27edf8f8-fbbf-4b37-9275-943692367fb0-0
+00:01:11.320 --> 00:01:14.711
+For example,
+if we look at the architecture of a
+
+27edf8f8-fbbf-4b37-9275-943692367fb0-1
+00:01:14.711 --> 00:01:18.103
+theatre,
+we see that its intent is to have shows
+
+27edf8f8-fbbf-4b37-9275-943692367fb0-2
+00:01:18.103 --> 00:01:19.280
+and performances.
+
+44844133-ea5f-46aa-bef0-8a30fc572b92-0
+00:01:19.600 --> 00:01:24.510
+But if we make people live or work in a
+theatre instead of in a suitable house or
+
+44844133-ea5f-46aa-bef0-8a30fc572b92-1
+00:01:24.510 --> 00:01:27.085
+an office,
+they would find themselves very
+
+44844133-ea5f-46aa-bef0-8a30fc572b92-2
+00:01:27.085 --> 00:01:30.200
+uncomfortable and would have a terrible
+experience.
+
+9159a9a3-5da9-4f63-9607-f098de495811-0
+00:01:31.240 --> 00:01:34.755
+On the other hand,
+if we look at the architecture of a
+
+9159a9a3-5da9-4f63-9607-f098de495811-1
+00:01:34.755 --> 00:01:38.207
+residential home,
+we see that it would be perfect for
+
+9159a9a3-5da9-4f63-9607-f098de495811-2
+00:01:38.207 --> 00:01:42.042
+people to live there,
+but hosting big shows or performances
+
+9159a9a3-5da9-4f63-9607-f098de495811-3
+00:01:42.042 --> 00:01:43.639
+would not work very well.
+
+5e077c58-0467-48c4-a5db-3faeddaff029-0
+00:01:44.760 --> 00:01:48.720
+Now, when it comes to software,
+the same principles apply.
+
+8931b022-ea5d-4afe-824b-0f349277763f-0
+00:01:49.480 --> 00:01:54.129
+There is almost an infinite number of
+ways for us to organise our code to
+
+8931b022-ea5d-4afe-824b-0f349277763f-1
+00:01:54.129 --> 00:01:59.280
+achieve the functionality of the system,
+but different organisations will give us
+
+8931b022-ea5d-4afe-824b-0f349277763f-2
+00:01:59.280 --> 00:02:00.599
+different properties.
+
+547f814d-c6b6-4daf-85a3-74f57c2e57ee-0
+00:02:01.280 --> 00:02:05.311
+In other words,
+the software architecture impacts how our
+
+547f814d-c6b6-4daf-85a3-74f57c2e57ee-1
+00:02:05.311 --> 00:02:10.176
+product will perform and scale,
+how easy it will be for us to add new
+
+547f814d-c6b6-4daf-85a3-74f57c2e57ee-2
+00:02:10.176 --> 00:02:15.736
+features and grow our engineering team,
+and also how well it's going to respond
+
+547f814d-c6b6-4daf-85a3-74f57c2e57ee-3
+00:02:15.736 --> 00:02:17.960
+to failures or security attacks.
+
+84cfd28e-6601-47d8-9893-c562a1670eb4-0
+00:02:18.560 --> 00:02:23.897
+And similarly to physical structures,
+if we organise our software in a sub
+
+84cfd28e-6601-47d8-9893-c562a1670eb4-1
+00:02:23.897 --> 00:02:27.029
+optimal way,
+the cost of a redesign will be
+
+84cfd28e-6601-47d8-9893-c562a1670eb4-2
+00:02:27.029 --> 00:02:30.232
+significant both in terms of time and
+money,
+
+84cfd28e-6601-47d8-9893-c562a1670eb4-3
+00:02:30.232 --> 00:02:34.359
+especially so when we're working on a
+large scale system.
+
+1b15328e-b194-4ec2-b81d-9200465e5a63-0
+00:02:35.440 --> 00:02:40.428
+So now that we have some basic intuition
+and motivation for software architecture,
+
+1b15328e-b194-4ec2-b81d-9200465e5a63-1
+00:02:40.428 --> 00:02:45.237
+let's define it a bit more formally so we
+know exactly what we're talking about
+
+1b15328e-b194-4ec2-b81d-9200465e5a63-2
+00:02:45.237 --> 00:02:46.560
+when we use this term.
+
+69311132-c783-4186-b473-a630b265b346-0
+00:02:47.920 --> 00:02:52.882
+Now there are many ways to define
+software architecture and for many years
+
+69311132-c783-4186-b473-a630b265b346-1
+00:02:52.882 --> 00:02:56.720
+people have been arguing about the best
+way to define it.
+
+f06ea39d-b2fb-45da-ade4-a669c4fe1a8e-0
+00:02:57.000 --> 00:03:00.972
+So in our course,
+the definition we're going to use is as
+
+f06ea39d-b2fb-45da-ade4-a669c4fe1a8e-1
+00:03:00.972 --> 00:03:01.520
+follows.
+
+f34080e9-15eb-4e44-8e14-8f7ec11ab1bb-0
+00:03:02.680 --> 00:03:08.155
+The software architecture of a system is
+a high level description of the system
+
+f34080e9-15eb-4e44-8e14-8f7ec11ab1bb-1
+00:03:08.155 --> 00:03:08.840
+structure.
+
+482866d4-59a9-46a9-ac1f-ab4e016ba7ad-0
+00:03:08.920 --> 00:03:13.840
+It's different components and how those
+components communicate with each other to
+
+482866d4-59a9-46a9-ac1f-ab4e016ba7ad-1
+00:03:13.840 --> 00:03:16.840
+fulfil the system's requirements and
+constraints.
+
+8c493a0d-0883-4995-a99d-36e881f13ee0-0
+00:03:18.040 --> 00:03:22.960
+It's a heavily loaded definition,
+so let's unpack it piece by piece.
+
+0b755da9-3120-4bdb-967f-4bfa1d98e0ec-0
+00:03:24.200 --> 00:03:29.361
+The first part of the definition states
+that the software architecture is a high
+
+0b755da9-3120-4bdb-967f-4bfa1d98e0ec-1
+00:03:29.361 --> 00:03:31.400
+level description of the system.
+
+4bd1ffc0-c544-49c1-8537-c6b928887931-0
+00:03:31.800 --> 00:03:36.968
+It means that it's an obstruction that
+shows us the important components that
+
+4bd1ffc0-c544-49c1-8537-c6b928887931-1
+00:03:36.968 --> 00:03:42.203
+help us reason about the system while
+hiding the implementation details out of
+
+4bd1ffc0-c544-49c1-8537-c6b928887931-2
+00:03:42.203 --> 00:03:42.800
+the view.
+
+b80a15cd-cf4a-49dc-a0b1-41401dfee8ce-0
+00:03:43.440 --> 00:03:48.163
+This implies that things like
+technologies or programming languages we
+
+b80a15cd-cf4a-49dc-a0b1-41401dfee8ce-1
+00:03:48.163 --> 00:03:53.684
+use to implement the system are not part
+of the software architecture and are part
+
+b80a15cd-cf4a-49dc-a0b1-41401dfee8ce-2
+00:03:53.684 --> 00:03:55.680
+of the implementation instead.
+
+97bd0b1f-3b58-47e9-81c5-27d126936feb-0
+00:03:56.760 --> 00:04:01.957
+This is an important point because many
+engineers falsely assume that software
+
+97bd0b1f-3b58-47e9-81c5-27d126936feb-1
+00:04:01.957 --> 00:04:06.760
+architecture is just about picking the
+right technologies or frameworks.
+
+1dbd5341-fb0c-4d63-bb79-e5d05f74c6c0-0
+00:04:07.360 --> 00:04:11.119
+This could not be farther from the truth,
+and in fact,
+
+1dbd5341-fb0c-4d63-bb79-e5d05f74c6c0-1
+00:04:11.119 --> 00:04:16.040
+we want to delay making these choices
+until the very end of our design.
+
+61d4d399-1e64-45e5-a10f-5c62e0703cf3-0
+00:04:17.120 --> 00:04:21.239
+The second part of the definition talks
+about the different components and how
+
+61d4d399-1e64-45e5-a10f-5c62e0703cf3-1
+00:04:21.239 --> 00:04:22.960
+they communicate with each other.
+
+e8501108-f5bd-4b4c-a30a-0d895df7a277-0
+00:04:23.600 --> 00:04:28.827
+The components that we're talking about
+when we talk about software architecture
+
+e8501108-f5bd-4b4c-a30a-0d895df7a277-1
+00:04:28.827 --> 00:04:33.280
+are black box elements that are defined
+by their behaviour and APIs.
+
+e1b3c18c-a76a-40d1-b5fc-d7bb7070f37e-0
+00:04:33.840 --> 00:04:37.525
+As a matter of fact,
+those components may themselves be
+
+e1b3c18c-a76a-40d1-b5fc-d7bb7070f37e-1
+00:04:37.525 --> 00:04:42.527
+complex systems that are described
+through their own software architectural
+
+e1b3c18c-a76a-40d1-b5fc-d7bb7070f37e-2
+00:04:42.527 --> 00:04:43.120
+diagrams.
+
+755c7f4d-8fe7-4798-8472-3cd4e59edb87-0
+00:04:43.240 --> 00:04:47.126
+So in a sense,
+this definition may be recursive when
+
+755c7f4d-8fe7-4798-8472-3cd4e59edb87-1
+00:04:47.126 --> 00:04:47.640
+needed.
+
+35448716-4a36-4faa-81fc-77dcbde52d3d-0
+00:04:48.760 --> 00:04:51.692
+Finally,
+the last part of the definition talks
+
+35448716-4a36-4faa-81fc-77dcbde52d3d-1
+00:04:51.692 --> 00:04:55.435
+about fulfilling the system's
+requirements and constraints,
+
+35448716-4a36-4faa-81fc-77dcbde52d3d-2
+00:04:55.435 --> 00:04:59.615
+which means that the software
+architecture should describe how all
+
+35448716-4a36-4faa-81fc-77dcbde52d3d-3
+00:04:59.615 --> 00:05:03.857
+those components are coming together to
+do what the system must do,
+
+35448716-4a36-4faa-81fc-77dcbde52d3d-4
+00:05:03.857 --> 00:05:08.599
+which is basically our requirements,
+and how the system does not do what it
+
+35448716-4a36-4faa-81fc-77dcbde52d3d-5
+00:05:08.599 --> 00:05:11.531
+shouldn't do,
+which is described in the system
+
+35448716-4a36-4faa-81fc-77dcbde52d3d-6
+00:05:11.531 --> 00:05:12.280
+constraints.
+
+189e9940-6ae9-466e-88ff-b999d889074e-0
+00:05:13.400 --> 00:05:17.880
+We're going to talk about all those
+components in great detail throughout the
+
+189e9940-6ae9-466e-88ff-b999d889074e-1
+00:05:17.880 --> 00:05:20.350
+course,
+but I think having this definition
+
+189e9940-6ae9-466e-88ff-b999d889074e-2
+00:05:20.350 --> 00:05:24.428
+upfront is going to set the stage for
+what we're going to learn in the
+
+189e9940-6ae9-466e-88ff-b999d889074e-3
+00:05:24.428 --> 00:05:25.519
+following lectures.
+
+9feb4853-b6da-4c51-ab1a-0f31563f8fe1-0
+00:05:26.760 --> 00:05:32.025
+Now when it comes to software development,
+we can talk about software architecture
+
+9feb4853-b6da-4c51-ab1a-0f31563f8fe1-1
+00:05:32.025 --> 00:05:36.593
+on many different levels of abstraction,
+starting from the lowest level
+
+9feb4853-b6da-4c51-ab1a-0f31563f8fe1-2
+00:05:36.593 --> 00:05:41.414
+obstructions like different classes or
+structs depending on the programming
+
+9feb4853-b6da-4c51-ab1a-0f31563f8fe1-3
+00:05:41.414 --> 00:05:46.045
+language and the organisation and
+communication between objects inside a
+
+9feb4853-b6da-4c51-ab1a-0f31563f8fe1-4
+00:05:46.045 --> 00:05:46.680
+programme.
+
+1a67a1cf-9b5d-4a58-a0b7-9d6bb1761f3a-0
+00:05:47.400 --> 00:05:51.320
+We can also go one level up and talk
+about modules,
+
+1a67a1cf-9b5d-4a58-a0b7-9d6bb1761f3a-1
+00:05:51.320 --> 00:05:55.920
+packages or libraries and how they
+interact with each other.
+
+f976275a-6be9-4bce-b3ef-d72464eda4d3-0
+00:05:56.880 --> 00:06:01.898
+But since in this course we're going to
+be focusing on large scale systems,
+
+f976275a-6be9-4bce-b3ef-d72464eda4d3-1
+00:06:01.898 --> 00:06:06.785
+we're going to talk about a higher level
+obstruction where the individual
+
+f976275a-6be9-4bce-b3ef-d72464eda4d3-2
+00:06:06.785 --> 00:06:12.002
+components are separate services that run
+as individual processes or groups of
+
+f976275a-6be9-4bce-b3ef-d72464eda4d3-3
+00:06:12.002 --> 00:06:15.039
+processes potentially on different
+computers.
+
+dede6dd5-57f4-4da8-b0fa-9561d23761c5-0
+00:06:16.600 --> 00:06:22.372
+It turns out that taking this more
+distributed multi service approach allows
+
+dede6dd5-57f4-4da8-b0fa-9561d23761c5-1
+00:06:22.372 --> 00:06:27.394
+us to architect systems that can handle
+large amounts of requests,
+
+dede6dd5-57f4-4da8-b0fa-9561d23761c5-2
+00:06:27.394 --> 00:06:32.417
+process and store very large amounts of
+data, and serve thousands,
+
+dede6dd5-57f4-4da8-b0fa-9561d23761c5-3
+00:06:32.417 --> 00:06:36.839
+hundreds of thousands or even millions of
+users every day.
+
+360799dc-6d37-4083-94fc-3fe033fec3d6-0
+00:06:38.120 --> 00:06:44.117
+A few examples of such systems include
+online software services such as ride
+
+360799dc-6d37-4083-94fc-3fe033fec3d6-1
+00:06:44.117 --> 00:06:48.791
+sharing, video on demand, social media,
+online video games,
+
+360799dc-6d37-4083-94fc-3fe033fec3d6-2
+00:06:48.791 --> 00:06:52.920
+investing services and banks, and many,
+many others.
+
+c22a9015-5e97-4866-b46c-12202920b115-0
+00:06:54.440 --> 00:06:58.963
+When we set our goal to build a product
+that operates on such a scale,
+
+c22a9015-5e97-4866-b46c-12202920b115-1
+00:06:58.963 --> 00:07:03.869
+getting the architecture just right can
+mean going from a small startup to a
+
+c22a9015-5e97-4866-b46c-12202920b115-2
+00:07:03.869 --> 00:07:09.156
+multibillion dollar company and making a
+positive impact on millions of people all
+
+c22a9015-5e97-4866-b46c-12202920b115-3
+00:07:09.156 --> 00:07:10.240
+around the world.
+
+81f7a991-a2da-4b9f-bf7b-e8ea3750fe94-0
+00:07:11.480 --> 00:07:15.406
+On the flip side,
+if we don't do a good job at the design
+
+81f7a991-a2da-4b9f-bf7b-e8ea3750fe94-1
+00:07:15.406 --> 00:07:18.249
+phase,
+we can potentially waste months of
+
+81f7a991-a2da-4b9f-bf7b-e8ea3750fe94-2
+00:07:18.249 --> 00:07:19.399
+engineering time.
+
+cf1c550d-60ac-46a7-9438-1c5f0815aa7c-0
+00:07:19.560 --> 00:07:25.200
+Building a system that doesn't meet our
+requirements and that nobody wants to use.
+
+40f4e2b9-6024-460d-992a-12c71d94c28d-0
+00:07:25.880 --> 00:07:31.241
+And restructuring a system that was not
+architected correctly is very hard and
+
+40f4e2b9-6024-460d-992a-12c71d94c28d-1
+00:07:31.241 --> 00:07:31.920
+expensive.
+
+dc276c43-5303-4757-9804-21071bdad99a-0
+00:07:32.520 --> 00:07:35.298
+So as we can see,
+the stakes here are high,
+
+dc276c43-5303-4757-9804-21071bdad99a-1
+00:07:35.298 --> 00:07:39.720
+which makes what we're going to learn in
+this course super important.
+
+d04ea9b1-632d-4ad5-a736-a1e91b9e4b15-0
+00:07:40.960 --> 00:07:45.518
+Now before we conclude this lecture,
+I want to talk about one last thing,
+
+d04ea9b1-632d-4ad5-a736-a1e91b9e4b15-1
+00:07:45.518 --> 00:07:50.200
+which is the place where software
+architecture fits in the overall picture.
+
+745762a1-1d9f-4c93-b91c-402d0fa5845b-0
+00:07:51.040 --> 00:07:56.589
+Software development can roughly be
+described in four phases, Design,
+
+745762a1-1d9f-4c93-b91c-402d0fa5845b-1
+00:07:56.589 --> 00:07:59.760
+implementation, testing, and deployment.
+
+98faa04f-68e6-4e0a-b33f-30173697221c-0
+00:08:00.720 --> 00:08:06.162
+Since generally software products keep
+evolving over a long period of time,
+
+98faa04f-68e6-4e0a-b33f-30173697221c-1
+00:08:06.162 --> 00:08:12.178
+those 4 phases can be repeated many times
+where arguably the first iteration is the
+
+98faa04f-68e6-4e0a-b33f-30173697221c-2
+00:08:12.178 --> 00:08:17.978
+most critical and subsequent iterations
+make incremental changes to the existing
+
+98faa04f-68e6-4e0a-b33f-30173697221c-3
+00:08:17.978 --> 00:08:18.480
+system.
+
+00b8951e-e1d3-4115-b0fa-758c0517c6ca-0
+00:08:19.040 --> 00:08:24.094
+Now something that I already alluded to
+but didn't state formally is that
+
+00b8951e-e1d3-4115-b0fa-758c0517c6ca-1
+00:08:24.094 --> 00:08:29.285
+software architecture is the output of
+the design phase in the input to the
+
+00b8951e-e1d3-4115-b0fa-758c0517c6ca-2
+00:08:29.285 --> 00:08:30.720
+implementation phase.
+
+9ec81332-08dc-4ee6-8f51-57803cab8432-0
+00:08:31.080 --> 00:08:34.652
+In this course,
+we're going to focus on arguably the most
+
+9ec81332-08dc-4ee6-8f51-57803cab8432-1
+00:08:34.652 --> 00:08:37.240
+important step, which is the design phase.
+
+bf41dbf4-d8ab-4bea-b873-034962ad2777-0
+00:08:37.840 --> 00:08:43.560
+The design phase is essentially a process
+of defining the software architecture of
+
+bf41dbf4-d8ab-4bea-b873-034962ad2777-1
+00:08:43.560 --> 00:08:48.660
+the system that an entire team,
+or even multiple teams of engineers later
+
+bf41dbf4-d8ab-4bea-b873-034962ad2777-2
+00:08:48.660 --> 00:08:53.070
+proceed to implement,
+sometimes over a course of multiple weeks
+
+bf41dbf4-d8ab-4bea-b873-034962ad2777-3
+00:08:53.070 --> 00:08:53.760
+or months.
+
+40aa45ac-5214-449b-ad59-9c75eb4aeb47-0
+00:08:54.920 --> 00:08:57.863
+Now,
+there are many challenges of defining a
+
+40aa45ac-5214-449b-ad59-9c75eb4aeb47-1
+00:08:57.863 --> 00:09:03.293
+good software architecture for our system,
+but the biggest challenge that software
+
+40aa45ac-5214-449b-ad59-9c75eb4aeb47-2
+00:09:03.293 --> 00:09:08.200
+engineers struggle with the most is the
+fact that unlike an algorithm or a
+
+40aa45ac-5214-449b-ad59-9c75eb4aeb47-3
+00:09:08.200 --> 00:09:12.059
+formula that can be proven to be both
+correct and optimal,
+
+40aa45ac-5214-449b-ad59-9c75eb4aeb47-4
+00:09:12.059 --> 00:09:15.200
+we can't do the same for software
+architecture.
+
+70029e87-0bcc-4398-a71e-c01d23c8f852-0
+00:09:15.760 --> 00:09:20.322
+So to guarantee our success,
+what we can do is follow a methodical
+
+70029e87-0bcc-4398-a71e-c01d23c8f852-1
+00:09:20.322 --> 00:09:25.769
+design process as well as apply industry
+proven architectural patterns and best
+
+70029e87-0bcc-4398-a71e-c01d23c8f852-2
+00:09:25.769 --> 00:09:28.901
+practises,
+which is what we're going to learn
+
+70029e87-0bcc-4398-a71e-c01d23c8f852-3
+00:09:28.901 --> 00:09:30.400
+throughout the course.
+
+352afa8d-a88a-4ce9-ad28-5d5e202bdb3f-0
+00:09:31.560 --> 00:09:36.145
+But before we proceed to the first topic,
+let's quickly summarise what we learned
+
+352afa8d-a88a-4ce9-ad28-5d5e202bdb3f-1
+00:09:36.145 --> 00:09:37.040
+in this lecture.
+
+cb29bbe7-3646-47af-8915-373a7c9268e8-0
+00:09:38.080 --> 00:09:41.860
+In this lecture,
+we got the intuition and motivation for
+
+cb29bbe7-3646-47af-8915-373a7c9268e8-1
+00:09:41.860 --> 00:09:43.320
+software architecture.
+
+a5c7f533-b809-4813-80a9-c677bd8ef44a-0
+00:09:43.960 --> 00:09:49.374
+We learned that every software system has
+an architecture which is basically its
+
+a5c7f533-b809-4813-80a9-c677bd8ef44a-1
+00:09:49.374 --> 00:09:52.850
+structure,
+and its structure is absolutely critical
+
+a5c7f533-b809-4813-80a9-c677bd8ef44a-2
+00:09:52.850 --> 00:09:53.920
+for its success.
+
+8141e209-cb27-467f-98ea-20be2041418d-0
+00:09:54.600 --> 00:09:59.725
+We later define software architecture
+more formally as a high level description
+
+8141e209-cb27-467f-98ea-20be2041418d-1
+00:09:59.725 --> 00:10:02.992
+of the system structure,
+its different components,
+
+8141e209-cb27-467f-98ea-20be2041418d-2
+00:10:02.992 --> 00:10:07.862
+and how those components communicate with
+each other to fulfil the system's
+
+8141e209-cb27-467f-98ea-20be2041418d-3
+00:10:07.862 --> 00:10:09.719
+requirements and constraints.
+
+1840cf91-a25e-483e-9877-9d09dcee6779-0
+00:10:10.520 --> 00:10:15.622
+And we concluded with placing software
+architecture in the overall software
+
+1840cf91-a25e-483e-9877-9d09dcee6779-1
+00:10:15.622 --> 00:10:20.992
+development cycle as the output of the
+design phase in the input to our systems
+
+1840cf91-a25e-483e-9877-9d09dcee6779-2
+00:10:20.992 --> 00:10:21.999
+implementation.
+
+80d1e43f-43f4-432a-a4f5-1fd84d1ee531-0
+00:10:22.560 --> 00:10:26.894
+So now that we get a solid introduction
+to what we're going to learn,
+
+80d1e43f-43f4-432a-a4f5-1fd84d1ee531-1
+00:10:26.894 --> 00:10:30.920
+let's go ahead and Start learning the
+first topic of the course.
