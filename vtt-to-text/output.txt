@@ -1,278 +1,281 @@
 WEBVTT
-Welcome to the first lecture.
-In this lecture we're going to get an
-introduction to software architecture and
-also learn why software architecture is
-so important.
-After that,
-we will define more formally and explain
-what software architecture means for us
-in the context of this course.
-And finally,
-we'll discuss where software architecture
-fits in the overall picture of the
-software development cycle.
-So let's start with some analogies from
-outside the software world,
-which will give us a good intuition of
-what software architecture means to us.
-Everything we build has a structure,
-whether we know about it or not,
-and whether we thought about it ahead of
-time or arrived at it spontaneously.
-The more we invest in building a product,
-the harder it becomes to change its
-structure after the fact.
-But what is the importance of a structure
-and why would we want to change it at all
-in the future?
-Well, The thing is,
-the structure of our system describes
-both the intent of our product and its
-qualities.
+Welcome back.
+In this lecture we're going to talk about
+gathering, classifying,
+and analyzing requirements as the first
+step in designing a large scale system.
+But before we get into any details,
+let's first get some motivation.
+System requirements is just a formal word
+for figuring out and narrowing down what
+exactly we need to build for our client.
+As software engineers,
+we shouldn't be new to receiving formal
+requirements for the task we need to
+accomplish.
+But when it comes to the design of a
+large scale system,
+there are a few differences from the
+usual requirements we are used to getting
+for implementing a method, an algorithm,
+or a class.
+The first difference is the scope and
+level of obstruction of the requirements
+and especially the solution we need to
+design.
 For example,
-if we look at the architecture of a
-theatre,
-we see that its intent is to have shows
-and performances.
-But if we make people live or work in a
-theatre instead of in a suitable house or
-an office,
-they would find themselves very
-uncomfortable and would have a terrible
-experience.
-On the other hand,
-if we look at the architecture of a
-residential home,
-we see that it would be perfect for
-people to live there,
-but hosting big shows or performances
-would not work very well.
-Now, when it comes to software,
-the same principles apply.
-There is almost an infinite number of
-ways for us to organise our code to
-achieve the functionality of the system,
-but different organisations will give us
-different properties.
-In other words,
-the software architecture impacts how our
-product will perform and scale,
-how easy it will be for us to add new
-features and grow our engineering team,
-and also how well it's going to respond
-to failures or security attacks.
-And similarly to physical structures,
-if we organise our software in a sub
-optimal way,
-the cost of a redesign will be
-significant both in terms of time and
-money,
-especially so when we're working on a
-large scale system.
-So now that we have some basic intuition
-and motivation for software architecture,
-let's define it a bit more formally so we
-know exactly what we're talking about
-when we use this term.
-Now there are many ways to define
-software architecture and for many years
-people have been arguing about the best
-way to define it.
-So in our course,
-the definition we're going to use is as
-follows.
-The software architecture of a system is
-a high level description of the system
-structure.
-It's different components and how those
-components communicate with each other to
-fulfil the system's requirements and
-constraints.
-It's a heavily loaded definition,
-so let's unpack it piece by piece.
-The first part of the definition states
-that the software architecture is a high
-level description of the system.
-It means that it's an obstruction that
-shows us the important components that
-help us reason about the system while
-hiding the implementation details out of
-the view.
-This implies that things like
-technologies or programming languages we
-use to implement the system are not part
-of the software architecture and are part
-of the implementation instead.
-This is an important point because many
-engineers falsely assume that software
-architecture is just about picking the
-right technologies or frameworks.
-This could not be farther from the truth,
-and in fact,
-we want to delay making these choices
-until the very end of our design.
-The second part of the definition talks
-about the different components and how
-they communicate with each other.
-The components that we're talking about
-when we talk about software architecture
-are black box elements that are defined
-by their behaviour and APIs.
-As a matter of fact,
-those components may themselves be
-complex systems that are described
-through their own software architectural
-diagrams.
-So in a sense,
-this definition may be recursive when
-needed.
-Finally,
-the last part of the definition talks
-about fulfilling the system's
-requirements and constraints,
-which means that the software
-architecture should describe how all
-those components are coming together to
-do what the system must do,
-which is basically our requirements,
-and how the system does not do what it
-shouldn't do,
-which is described in the system
-constraints.
-We're going to talk about all those
-components in great detail throughout the
-course,
-but I think having this definition
-upfront is going to set the stage for
-what we're going to learn in the
-following lectures.
-Now when it comes to software development,
-we can talk about software architecture
-on many different levels of abstraction,
-starting from the lowest level
-obstructions like different classes or
-structs depending on the programming
-language and the organisation and
-communication between objects inside a
-programme.
-We can also go one level up and talk
-about modules,
-packages or libraries and how they
-interact with each other.
-But since in this course we're going to
-be focusing on large scale systems,
-we're going to talk about a higher level
-obstruction where the individual
-components are separate services that run
-as individual processes or groups of
-processes potentially on different
-computers.
-It turns out that taking this more
-distributed multi service approach allows
-us to architect systems that can handle
-large amounts of requests,
-process and store very large amounts of
-data, and serve thousands,
-hundreds of thousands or even millions of
-users every day.
-A few examples of such systems include
-online software services such as ride
-sharing, video on demand, social media,
-online video games,
-investing services and banks, and many,
-many others.
-When we set our goal to build a product
-that operates on such a scale,
-getting the architecture just right can
-mean going from a small startup to a
-multibillion dollar company and making a
-positive impact on millions of people all
-around the world.
-On the flip side,
-if we don't do a good job at the design
-phase,
-we can potentially waste months of
-engineering time.
-Building a system that doesn't meet our
-requirements and that nobody wants to use.
-And restructuring a system that was not
-architected correctly is very hard and
-expensive.
-So as we can see,
-the stakes here are high,
-which makes what we're going to learn in
-this course super important.
-Now before we conclude this lecture,
-I want to talk about one last thing,
-which is the place where software
-architecture fits in the overall picture.
-Software development can roughly be
-described in four phases, Design,
-implementation, testing, and deployment.
-Since generally software products keep
-evolving over a long period of time,
-those 4 phases can be repeated many times
-where arguably the first iteration is the
-most critical and subsequent iterations
-make incremental changes to the existing
-system.
-Now something that I already alluded to
-but didn't state formally is that
-software architecture is the output of
-the design phase in the input to the
-implementation phase.
-In this course,
-we're going to focus on arguably the most
-important step, which is the design phase.
-The design phase is essentially a process
-of defining the software architecture of
-the system that an entire team,
-or even multiple teams of engineers later
-proceed to implement,
-sometimes over a course of multiple weeks
-or months.
-Now,
-there are many challenges of defining a
-good software architecture for our system,
-but the biggest challenge that software
-engineers struggle with the most is the
-fact that unlike an algorithm or a
-formula that can be proven to be both
-correct and optimal,
-we can't do the same for software
-architecture.
-So to guarantee our success,
-what we can do is follow a methodical
-design process as well as apply industry
-proven architectural patterns and best
-practises,
-which is what we're going to learn
-throughout the course.
-But before we proceed to the first topic,
-let's quickly summarise what we learned
-in this lecture.
-In this lecture,
-we got the intuition and motivation for
+when we're tasked to implement a method
+or an algorithm in an existing code base,
+we typically know what the input and
+output look like.
+We're also somewhat limited to the
+programming languages we're going to use.
+As we go up to a more high level
+obstruction, like designing a Class,
+A module, a library, or an application,
+the range of possible ways to solve the
+problem becomes bigger and bigger as we
+have more degrees of freedom.
+Also,
+the scope of the problem becomes so high
+that it's hard for us to even visualize
+the implementation.
+So when we are asked to design an entire
+system,
+we may feel so overwhelmed that we may
+not even know where to begin.
+For example,
+imagine you're asked to design a file
+storage system,
+a video streaming solution,
+or a ride sharing service that needs to
+scale to serving millions of users per
+day.
+It's hard not to get overwhelmed by such
+a task.
+The second challenge and difference from
+what we're normally used to is the level
+of ambiguity.
+The reason for this ambiguity is twofold.
+First of all,
+in many cases the requirements are not
+even coming from an engineer,
+and sometimes they're not even coming
+from a very technical person.
+So the client or product manager may ask
+for something very high level,
+and it's our responsibility to transform
+those requests into precise and technical
+requirements.
+Those technical requirements will serve
+as the foundation for building our
 software architecture.
-We learned that every software system has
-an architecture which is basically its
-structure,
-and its structure is absolutely critical
-for its success.
-We later define software architecture
-more formally as a high level description
-of the system structure,
-its different components,
-and how those components communicate with
-each other to fulfil the system's
-requirements and constraints.
-And we concluded with placing software
-architecture in the overall software
-development cycle as the output of the
-design phase in the input to our systems
-implementation.
-So now that we get a solid introduction
-to what we're going to learn,
-let's go ahead and Start learning the
-first topic of the course.
+The second reason for the high level of
+ambiguity is getting the specific
+requirements is already part of the
+solution.
+This may seem a little odd for us at
+first,
+but we have to remember that the client
+doesn't always know exactly what they
+need.
+The only thing they know for sure is the
+problem they need to solve.
+To demonstrate this,
+let's take a specific example.
+Let's say we're asked to design A
+hitchhiking service that allows people to
+join drivers that are already driving on
+a particular route and are willing to
+take passengers on their way for a fee.
+That may be all the requirements we get
+from the client and it is up to us to ask
+things like is it going to be a real time
+service or the riders will have to
+contact the drivers in advance?
+Is it going to be a mobile or desktop
+experience or maybe both?
+Are we going to enable payment through
+our system or the riders will have to pay
+the drivers directly?
+In some cases,
+the client may not even know the answer
+to those right away until we actually ask
+those questions.
+That is why in most system design
+interviews,
+one of the things being tested is our
+ability to clarify and ask those
+questions ahead of time.
+Because as we can see,
+asking those questions and gathering
+those requirements is already part of the
+solution,
+and it greatly narrows down what we need
+to design and build Now.
+What happens if we don't get all the
+requirements right?
+Can't we just do it incrementally?
+Why can't we simply build something and
+see if it satisfies the client?
+And if it doesn't, no big deal,
+we can just fix it, can't we?
+After all,
+we're not building a building or a bridge
+here.
+There's seemingly no big cost of
+materials and software like in mechanical
+engineering for example,
+or construction of a building.
+Well,
+the mental leap we need to make here from
+small projects like building a method or
+a few classes where we can easily rewrite
+the code many times until we get it right.
+Large scale systems are big projects that
+cannot be changed easily overnight.
+Those projects take many engineers,
+sometimes even multiple teams of
+engineers.
+They can take months to build,
+which makes the cost of engineering time
+very significant.
+They also often require purchasing
+hardware and sometimes software licenses
+upfront,
+and those projects typically involve
+contracts with time commitments and
+financial obligations.
+Also,
+not delivering the product to our clients
+or users on time may cause irreversible
+damage to our company's reputation and
+brand image,
+So getting the requirements right upfront
+is absolutely critical.
+O Now that we got the motivation for
+system requirements,
+let's take a step further and learn to
+classify the requirements into a few
+categories which have completely
+different effects on our architecture and
+design.
+The three main types of requirements are
+features of the system,
+also known as functional requirements,
+quality attributes which are also known
+as non functional requirements,
+and system constraints which are
+basically the limitations and boundaries
+of the system.
+Let's start talking about the first type
+of requirements,
+the features of the system.
+Those requirements essentially describe
+the system's behavior.
+In other words,
+what the system we're designing actually
+does.
+Those requirements are easily tied to the
+objective of the system.
+They are also called functional
+requirements because they essentially
+describe our system as a black box
+function.
+The user's inputs or external events are
+the inputs to that function,
+and the result or outcome of the
+operation taken by our system is the
+output of that function.
+It's important to point out that the
+features or functional requirements
+simply dictate the functionality of our
+system but do not determine its
+architecture.
+And generally any architecture can
+achieve any feature,
+which is what makes our job as software
+architects so difficult.
+Now let's look at a few examples of
+features or functional requirements in
+our hitchhiking service example,
+one functional requirement can be as
+follows.
+When a rider logs into our mobile app,
+the system must display a map with nearby
+drivers within 5 miles from radius.
+Here,
+the input to our system is the user's
+login action,
+and the output is the view of a map with
+nearby drivers.
+Let's take another example.
+When the ride is complete the system will
+charge the riders credit card and
+transfer that money to the driver minus
+some service fees.
+Here the completion of the ride is the
+input event and the transfer of the money
+is the outcome of the operation.
+Now let's talk about the second type of
+requirements,
+the quality attributes or non functional
+requirements.
+The quality attributes are properties
+that the system must have as opposed to
+what the system must do.
+Examples of such qualities include
+scalability, availability, reliability,
+security, performance,
+and this list can go on and change
+depending on the system.
+In contrast to the functional
+requirements,
+the quality attributes do dictate the
+software architecture of our system.
+Another way to look at this is the
+software architecture defines the system
+quality attributes and different
+architectures provide us with different
+quality attributes.
+The last type of requirements is system
+constraints.
+A few examples include strict deadlines,
+limited budget,
+or a small number of engineers that can
+work on our project.
+Such constraints may force us to make
+certain trade-offs and sacrifices in our
+design and shift us towards certain
+software architectural decisions that we
+would not make if we didn't have those
+constraints.
+The three types of requirements that we
+learned in this lecture are also
+sometimes referred to as architectural
+drivers because they essentially Dr.
+our architectural decisions from an
+infinite universe of possibilities
+towards one solution that satisfies our
+clients needs.
+In this lecture,
+we learned about the importance of
+requirements in the design of large scale
+systems.
+We discussed a few challenges of
+gathering those requirements,
+such as the large scope and ambiguity
+that we may not be familiar with coming
+from a smaller scale programming world.
+After that,
+we talked about the risks of not getting
+those requirements correctly upfront.
+And finally,
+we classified those requirements into
+three groups,
+which are also called the architectural
+drivers of the system.
+Those three groups are the features of
+the system, the quality attributes,
+and the system's constraints.
+See you guys all in the next lecture.

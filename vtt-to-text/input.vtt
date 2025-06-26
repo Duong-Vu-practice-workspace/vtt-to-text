@@ -1,743 +1,758 @@
 WEBVTT
 
-6d6e7257-69fb-41b3-9148-1983308e3fc7-0
-00:00:00.320 --> 00:00:01.720
-Welcome to the first lecture.
+5dee003a-615b-42fc-b544-3b3fc1bd4c34-0
+00:00:00.680 --> 00:00:01.400
+Welcome back.
 
-b10a590d-484e-4d89-b3d7-af5c8436c221-0
-00:00:02.920 --> 00:00:07.887
-In this lecture we're going to get an
-introduction to software architecture and
+39f7985a-3b15-4e5c-9437-6c709574bb8b-0
+00:00:03.280 --> 00:00:07.330
+In this lecture we're going to talk about
+gathering, classifying,
 
-b10a590d-484e-4d89-b3d7-af5c8436c221-1
-00:00:07.887 --> 00:00:11.240
-also learn why software architecture is
-so important.
+39f7985a-3b15-4e5c-9437-6c709574bb8b-1
+00:00:07.330 --> 00:00:12.240
+and analyzing requirements as the first
+step in designing a large scale system.
 
-3c781ead-18d1-4e3a-90c6-dd8392c9d158-0
-00:00:11.600 --> 00:00:14.899
-After that,
-we will define more formally and explain
+e099c55d-6104-4355-b647-7c5cae097152-0
+00:00:13.000 --> 00:00:17.120
+But before we get into any details,
+let's first get some motivation.
 
-3c781ead-18d1-4e3a-90c6-dd8392c9d158-1
-00:00:14.899 --> 00:00:19.320
-what software architecture means for us
-in the context of this course.
+479141dd-dd63-4007-96b5-7b93a8a8daa5-0
+00:00:18.760 --> 00:00:24.185
+System requirements is just a formal word
+for figuring out and narrowing down what
 
-6fece3d3-f290-45a3-9c32-173e7bc5c8fd-0
-00:00:19.880 --> 00:00:23.385
-And finally,
-we'll discuss where software architecture
+479141dd-dd63-4007-96b5-7b93a8a8daa5-1
+00:00:24.185 --> 00:00:26.800
+exactly we need to build for our client.
 
-6fece3d3-f290-45a3-9c32-173e7bc5c8fd-1
-00:00:23.385 --> 00:00:27.400
-fits in the overall picture of the
-software development cycle.
+7498d374-4678-441f-8a5e-9b0be973268c-0
+00:00:27.400 --> 00:00:30.797
+As software engineers,
+we shouldn't be new to receiving formal
 
-b1a31200-a084-4573-9cf0-49b941143a91-0
-00:00:28.480 --> 00:00:32.791
-So let's start with some analogies from
-outside the software world,
+7498d374-4678-441f-8a5e-9b0be973268c-1
+00:00:30.797 --> 00:00:33.440
+requirements for the task we need to
+accomplish.
 
-b1a31200-a084-4573-9cf0-49b941143a91-1
-00:00:32.791 --> 00:00:37.800
-which will give us a good intuition of
-what software architecture means to us.
+e746f79b-906f-4a2b-af55-3c6aa0f63b06-0
+00:00:33.720 --> 00:00:36.953
+But when it comes to the design of a
+large scale system,
 
-62bb2b1f-1cbf-42b2-9592-e36beb5c0e39-0
-00:00:38.840 --> 00:00:43.380
-Everything we build has a structure,
-whether we know about it or not,
+e746f79b-906f-4a2b-af55-3c6aa0f63b06-1
+00:00:36.953 --> 00:00:41.433
+there are a few differences from the
+usual requirements we are used to getting
 
-62bb2b1f-1cbf-42b2-9592-e36beb5c0e39-1
-00:00:43.380 --> 00:00:48.440
-and whether we thought about it ahead of
-time or arrived at it spontaneously.
+e746f79b-906f-4a2b-af55-3c6aa0f63b06-2
+00:00:41.433 --> 00:00:44.440
+for implementing a method, an algorithm,
+or a class.
 
-3cd2d90d-a6e0-44c0-9066-03271ce537dc-0
-00:00:49.200 --> 00:00:54.076
-The more we invest in building a product,
-the harder it becomes to change its
+2b92b6cf-535c-4d2f-bdf7-66b4d4e6e671-0
+00:00:46.480 --> 00:00:51.019
+The first difference is the scope and
+level of obstruction of the requirements
 
-3cd2d90d-a6e0-44c0-9066-03271ce537dc-1
-00:00:54.076 --> 00:00:55.640
-structure after the fact.
+2b92b6cf-535c-4d2f-bdf7-66b4d4e6e671-1
+00:00:51.019 --> 00:00:53.720
+and especially the solution we need to
+design.
 
-eadb3115-5e23-44b7-b939-546816652368-0
-00:00:56.000 --> 00:01:01.040
-But what is the importance of a structure
-and why would we want to change it at all
-
-eadb3115-5e23-44b7-b939-546816652368-1
-00:01:01.040 --> 00:01:01.880
-in the future?
-
-f49d627c-19a5-4287-8b4b-cc7d414b0c53-0
-00:01:02.520 --> 00:01:06.601
-Well, The thing is,
-the structure of our system describes
-
-f49d627c-19a5-4287-8b4b-cc7d414b0c53-1
-00:01:06.601 --> 00:01:10.120
-both the intent of our product and its
-qualities.
-
-27edf8f8-fbbf-4b37-9275-943692367fb0-0
-00:01:11.320 --> 00:01:14.711
+2a3e4a18-e5d3-43c5-94dd-a95e9f697247-0
+00:00:54.600 --> 00:00:57.829
 For example,
-if we look at the architecture of a
-
-27edf8f8-fbbf-4b37-9275-943692367fb0-1
-00:01:14.711 --> 00:01:18.103
-theatre,
-we see that its intent is to have shows
-
-27edf8f8-fbbf-4b37-9275-943692367fb0-2
-00:01:18.103 --> 00:01:19.280
-and performances.
-
-44844133-ea5f-46aa-bef0-8a30fc572b92-0
-00:01:19.600 --> 00:01:24.510
-But if we make people live or work in a
-theatre instead of in a suitable house or
-
-44844133-ea5f-46aa-bef0-8a30fc572b92-1
-00:01:24.510 --> 00:01:27.085
-an office,
-they would find themselves very
-
-44844133-ea5f-46aa-bef0-8a30fc572b92-2
-00:01:27.085 --> 00:01:30.200
-uncomfortable and would have a terrible
-experience.
-
-9159a9a3-5da9-4f63-9607-f098de495811-0
-00:01:31.240 --> 00:01:34.755
-On the other hand,
-if we look at the architecture of a
-
-9159a9a3-5da9-4f63-9607-f098de495811-1
-00:01:34.755 --> 00:01:38.207
-residential home,
-we see that it would be perfect for
-
-9159a9a3-5da9-4f63-9607-f098de495811-2
-00:01:38.207 --> 00:01:42.042
-people to live there,
-but hosting big shows or performances
-
-9159a9a3-5da9-4f63-9607-f098de495811-3
-00:01:42.042 --> 00:01:43.639
-would not work very well.
-
-5e077c58-0467-48c4-a5db-3faeddaff029-0
-00:01:44.760 --> 00:01:48.720
-Now, when it comes to software,
-the same principles apply.
-
-8931b022-ea5d-4afe-824b-0f349277763f-0
-00:01:49.480 --> 00:01:54.129
-There is almost an infinite number of
-ways for us to organise our code to
-
-8931b022-ea5d-4afe-824b-0f349277763f-1
-00:01:54.129 --> 00:01:59.280
-achieve the functionality of the system,
-but different organisations will give us
-
-8931b022-ea5d-4afe-824b-0f349277763f-2
-00:01:59.280 --> 00:02:00.599
-different properties.
-
-547f814d-c6b6-4daf-85a3-74f57c2e57ee-0
-00:02:01.280 --> 00:02:05.311
-In other words,
-the software architecture impacts how our
-
-547f814d-c6b6-4daf-85a3-74f57c2e57ee-1
-00:02:05.311 --> 00:02:10.176
-product will perform and scale,
-how easy it will be for us to add new
-
-547f814d-c6b6-4daf-85a3-74f57c2e57ee-2
-00:02:10.176 --> 00:02:15.736
-features and grow our engineering team,
-and also how well it's going to respond
-
-547f814d-c6b6-4daf-85a3-74f57c2e57ee-3
-00:02:15.736 --> 00:02:17.960
-to failures or security attacks.
-
-84cfd28e-6601-47d8-9893-c562a1670eb4-0
-00:02:18.560 --> 00:02:23.897
-And similarly to physical structures,
-if we organise our software in a sub
-
-84cfd28e-6601-47d8-9893-c562a1670eb4-1
-00:02:23.897 --> 00:02:27.029
-optimal way,
-the cost of a redesign will be
-
-84cfd28e-6601-47d8-9893-c562a1670eb4-2
-00:02:27.029 --> 00:02:30.232
-significant both in terms of time and
-money,
-
-84cfd28e-6601-47d8-9893-c562a1670eb4-3
-00:02:30.232 --> 00:02:34.359
-especially so when we're working on a
-large scale system.
-
-1b15328e-b194-4ec2-b81d-9200465e5a63-0
-00:02:35.440 --> 00:02:40.428
-So now that we have some basic intuition
-and motivation for software architecture,
-
-1b15328e-b194-4ec2-b81d-9200465e5a63-1
-00:02:40.428 --> 00:02:45.237
-let's define it a bit more formally so we
-know exactly what we're talking about
-
-1b15328e-b194-4ec2-b81d-9200465e5a63-2
-00:02:45.237 --> 00:02:46.560
-when we use this term.
-
-69311132-c783-4186-b473-a630b265b346-0
-00:02:47.920 --> 00:02:52.882
-Now there are many ways to define
-software architecture and for many years
-
-69311132-c783-4186-b473-a630b265b346-1
-00:02:52.882 --> 00:02:56.720
-people have been arguing about the best
-way to define it.
-
-f06ea39d-b2fb-45da-ade4-a669c4fe1a8e-0
-00:02:57.000 --> 00:03:00.972
-So in our course,
-the definition we're going to use is as
-
-f06ea39d-b2fb-45da-ade4-a669c4fe1a8e-1
-00:03:00.972 --> 00:03:01.520
-follows.
-
-f34080e9-15eb-4e44-8e14-8f7ec11ab1bb-0
-00:03:02.680 --> 00:03:08.155
-The software architecture of a system is
-a high level description of the system
-
-f34080e9-15eb-4e44-8e14-8f7ec11ab1bb-1
-00:03:08.155 --> 00:03:08.840
-structure.
-
-482866d4-59a9-46a9-ac1f-ab4e016ba7ad-0
-00:03:08.920 --> 00:03:13.840
-It's different components and how those
-components communicate with each other to
-
-482866d4-59a9-46a9-ac1f-ab4e016ba7ad-1
-00:03:13.840 --> 00:03:16.840
-fulfil the system's requirements and
-constraints.
-
-8c493a0d-0883-4995-a99d-36e881f13ee0-0
-00:03:18.040 --> 00:03:22.960
-It's a heavily loaded definition,
-so let's unpack it piece by piece.
-
-0b755da9-3120-4bdb-967f-4bfa1d98e0ec-0
-00:03:24.200 --> 00:03:29.361
-The first part of the definition states
-that the software architecture is a high
-
-0b755da9-3120-4bdb-967f-4bfa1d98e0ec-1
-00:03:29.361 --> 00:03:31.400
-level description of the system.
-
-4bd1ffc0-c544-49c1-8537-c6b928887931-0
-00:03:31.800 --> 00:03:36.968
-It means that it's an obstruction that
-shows us the important components that
-
-4bd1ffc0-c544-49c1-8537-c6b928887931-1
-00:03:36.968 --> 00:03:42.203
-help us reason about the system while
-hiding the implementation details out of
-
-4bd1ffc0-c544-49c1-8537-c6b928887931-2
-00:03:42.203 --> 00:03:42.800
-the view.
-
-b80a15cd-cf4a-49dc-a0b1-41401dfee8ce-0
-00:03:43.440 --> 00:03:48.163
-This implies that things like
-technologies or programming languages we
-
-b80a15cd-cf4a-49dc-a0b1-41401dfee8ce-1
-00:03:48.163 --> 00:03:53.684
-use to implement the system are not part
-of the software architecture and are part
-
-b80a15cd-cf4a-49dc-a0b1-41401dfee8ce-2
-00:03:53.684 --> 00:03:55.680
-of the implementation instead.
-
-97bd0b1f-3b58-47e9-81c5-27d126936feb-0
-00:03:56.760 --> 00:04:01.957
-This is an important point because many
-engineers falsely assume that software
-
-97bd0b1f-3b58-47e9-81c5-27d126936feb-1
-00:04:01.957 --> 00:04:06.760
-architecture is just about picking the
-right technologies or frameworks.
-
-1dbd5341-fb0c-4d63-bb79-e5d05f74c6c0-0
-00:04:07.360 --> 00:04:11.119
-This could not be farther from the truth,
-and in fact,
-
-1dbd5341-fb0c-4d63-bb79-e5d05f74c6c0-1
-00:04:11.119 --> 00:04:16.040
-we want to delay making these choices
-until the very end of our design.
-
-61d4d399-1e64-45e5-a10f-5c62e0703cf3-0
-00:04:17.120 --> 00:04:21.239
-The second part of the definition talks
-about the different components and how
-
-61d4d399-1e64-45e5-a10f-5c62e0703cf3-1
-00:04:21.239 --> 00:04:22.960
-they communicate with each other.
-
-e8501108-f5bd-4b4c-a30a-0d895df7a277-0
-00:04:23.600 --> 00:04:28.827
-The components that we're talking about
-when we talk about software architecture
-
-e8501108-f5bd-4b4c-a30a-0d895df7a277-1
-00:04:28.827 --> 00:04:33.280
-are black box elements that are defined
-by their behaviour and APIs.
-
-e1b3c18c-a76a-40d1-b5fc-d7bb7070f37e-0
-00:04:33.840 --> 00:04:37.525
-As a matter of fact,
-those components may themselves be
-
-e1b3c18c-a76a-40d1-b5fc-d7bb7070f37e-1
-00:04:37.525 --> 00:04:42.527
-complex systems that are described
-through their own software architectural
-
-e1b3c18c-a76a-40d1-b5fc-d7bb7070f37e-2
-00:04:42.527 --> 00:04:43.120
-diagrams.
-
-755c7f4d-8fe7-4798-8472-3cd4e59edb87-0
-00:04:43.240 --> 00:04:47.126
-So in a sense,
-this definition may be recursive when
-
-755c7f4d-8fe7-4798-8472-3cd4e59edb87-1
-00:04:47.126 --> 00:04:47.640
-needed.
-
-35448716-4a36-4faa-81fc-77dcbde52d3d-0
-00:04:48.760 --> 00:04:51.692
-Finally,
-the last part of the definition talks
-
-35448716-4a36-4faa-81fc-77dcbde52d3d-1
-00:04:51.692 --> 00:04:55.435
-about fulfilling the system's
-requirements and constraints,
-
-35448716-4a36-4faa-81fc-77dcbde52d3d-2
-00:04:55.435 --> 00:04:59.615
-which means that the software
-architecture should describe how all
-
-35448716-4a36-4faa-81fc-77dcbde52d3d-3
-00:04:59.615 --> 00:05:03.857
-those components are coming together to
-do what the system must do,
-
-35448716-4a36-4faa-81fc-77dcbde52d3d-4
-00:05:03.857 --> 00:05:08.599
-which is basically our requirements,
-and how the system does not do what it
-
-35448716-4a36-4faa-81fc-77dcbde52d3d-5
-00:05:08.599 --> 00:05:11.531
-shouldn't do,
-which is described in the system
-
-35448716-4a36-4faa-81fc-77dcbde52d3d-6
-00:05:11.531 --> 00:05:12.280
-constraints.
-
-189e9940-6ae9-466e-88ff-b999d889074e-0
-00:05:13.400 --> 00:05:17.880
-We're going to talk about all those
-components in great detail throughout the
-
-189e9940-6ae9-466e-88ff-b999d889074e-1
-00:05:17.880 --> 00:05:20.350
-course,
-but I think having this definition
-
-189e9940-6ae9-466e-88ff-b999d889074e-2
-00:05:20.350 --> 00:05:24.428
-upfront is going to set the stage for
-what we're going to learn in the
-
-189e9940-6ae9-466e-88ff-b999d889074e-3
-00:05:24.428 --> 00:05:25.519
-following lectures.
-
-9feb4853-b6da-4c51-ab1a-0f31563f8fe1-0
-00:05:26.760 --> 00:05:32.025
-Now when it comes to software development,
-we can talk about software architecture
-
-9feb4853-b6da-4c51-ab1a-0f31563f8fe1-1
-00:05:32.025 --> 00:05:36.593
-on many different levels of abstraction,
-starting from the lowest level
-
-9feb4853-b6da-4c51-ab1a-0f31563f8fe1-2
-00:05:36.593 --> 00:05:41.414
-obstructions like different classes or
-structs depending on the programming
-
-9feb4853-b6da-4c51-ab1a-0f31563f8fe1-3
-00:05:41.414 --> 00:05:46.045
-language and the organisation and
-communication between objects inside a
-
-9feb4853-b6da-4c51-ab1a-0f31563f8fe1-4
-00:05:46.045 --> 00:05:46.680
-programme.
-
-1a67a1cf-9b5d-4a58-a0b7-9d6bb1761f3a-0
-00:05:47.400 --> 00:05:51.320
-We can also go one level up and talk
-about modules,
-
-1a67a1cf-9b5d-4a58-a0b7-9d6bb1761f3a-1
-00:05:51.320 --> 00:05:55.920
-packages or libraries and how they
-interact with each other.
-
-f976275a-6be9-4bce-b3ef-d72464eda4d3-0
-00:05:56.880 --> 00:06:01.898
-But since in this course we're going to
-be focusing on large scale systems,
-
-f976275a-6be9-4bce-b3ef-d72464eda4d3-1
-00:06:01.898 --> 00:06:06.785
-we're going to talk about a higher level
-obstruction where the individual
-
-f976275a-6be9-4bce-b3ef-d72464eda4d3-2
-00:06:06.785 --> 00:06:12.002
-components are separate services that run
-as individual processes or groups of
-
-f976275a-6be9-4bce-b3ef-d72464eda4d3-3
-00:06:12.002 --> 00:06:15.039
-processes potentially on different
-computers.
-
-dede6dd5-57f4-4da8-b0fa-9561d23761c5-0
-00:06:16.600 --> 00:06:22.372
-It turns out that taking this more
-distributed multi service approach allows
-
-dede6dd5-57f4-4da8-b0fa-9561d23761c5-1
-00:06:22.372 --> 00:06:27.394
-us to architect systems that can handle
-large amounts of requests,
-
-dede6dd5-57f4-4da8-b0fa-9561d23761c5-2
-00:06:27.394 --> 00:06:32.417
-process and store very large amounts of
-data, and serve thousands,
-
-dede6dd5-57f4-4da8-b0fa-9561d23761c5-3
-00:06:32.417 --> 00:06:36.839
-hundreds of thousands or even millions of
-users every day.
-
-360799dc-6d37-4083-94fc-3fe033fec3d6-0
-00:06:38.120 --> 00:06:44.117
-A few examples of such systems include
-online software services such as ride
-
-360799dc-6d37-4083-94fc-3fe033fec3d6-1
-00:06:44.117 --> 00:06:48.791
-sharing, video on demand, social media,
-online video games,
-
-360799dc-6d37-4083-94fc-3fe033fec3d6-2
-00:06:48.791 --> 00:06:52.920
-investing services and banks, and many,
-many others.
-
-c22a9015-5e97-4866-b46c-12202920b115-0
-00:06:54.440 --> 00:06:58.963
-When we set our goal to build a product
-that operates on such a scale,
-
-c22a9015-5e97-4866-b46c-12202920b115-1
-00:06:58.963 --> 00:07:03.869
-getting the architecture just right can
-mean going from a small startup to a
-
-c22a9015-5e97-4866-b46c-12202920b115-2
-00:07:03.869 --> 00:07:09.156
-multibillion dollar company and making a
-positive impact on millions of people all
-
-c22a9015-5e97-4866-b46c-12202920b115-3
-00:07:09.156 --> 00:07:10.240
-around the world.
-
-81f7a991-a2da-4b9f-bf7b-e8ea3750fe94-0
-00:07:11.480 --> 00:07:15.406
-On the flip side,
-if we don't do a good job at the design
-
-81f7a991-a2da-4b9f-bf7b-e8ea3750fe94-1
-00:07:15.406 --> 00:07:18.249
-phase,
-we can potentially waste months of
-
-81f7a991-a2da-4b9f-bf7b-e8ea3750fe94-2
-00:07:18.249 --> 00:07:19.399
-engineering time.
-
-cf1c550d-60ac-46a7-9438-1c5f0815aa7c-0
-00:07:19.560 --> 00:07:25.200
-Building a system that doesn't meet our
-requirements and that nobody wants to use.
-
-40f4e2b9-6024-460d-992a-12c71d94c28d-0
-00:07:25.880 --> 00:07:31.241
-And restructuring a system that was not
-architected correctly is very hard and
-
-40f4e2b9-6024-460d-992a-12c71d94c28d-1
-00:07:31.241 --> 00:07:31.920
-expensive.
-
-dc276c43-5303-4757-9804-21071bdad99a-0
-00:07:32.520 --> 00:07:35.298
-So as we can see,
-the stakes here are high,
-
-dc276c43-5303-4757-9804-21071bdad99a-1
-00:07:35.298 --> 00:07:39.720
-which makes what we're going to learn in
-this course super important.
-
-d04ea9b1-632d-4ad5-a736-a1e91b9e4b15-0
-00:07:40.960 --> 00:07:45.518
-Now before we conclude this lecture,
-I want to talk about one last thing,
-
-d04ea9b1-632d-4ad5-a736-a1e91b9e4b15-1
-00:07:45.518 --> 00:07:50.200
-which is the place where software
-architecture fits in the overall picture.
-
-745762a1-1d9f-4c93-b91c-402d0fa5845b-0
-00:07:51.040 --> 00:07:56.589
-Software development can roughly be
-described in four phases, Design,
-
-745762a1-1d9f-4c93-b91c-402d0fa5845b-1
-00:07:56.589 --> 00:07:59.760
-implementation, testing, and deployment.
-
-98faa04f-68e6-4e0a-b33f-30173697221c-0
-00:08:00.720 --> 00:08:06.162
-Since generally software products keep
-evolving over a long period of time,
-
-98faa04f-68e6-4e0a-b33f-30173697221c-1
-00:08:06.162 --> 00:08:12.178
-those 4 phases can be repeated many times
-where arguably the first iteration is the
-
-98faa04f-68e6-4e0a-b33f-30173697221c-2
-00:08:12.178 --> 00:08:17.978
-most critical and subsequent iterations
-make incremental changes to the existing
-
-98faa04f-68e6-4e0a-b33f-30173697221c-3
-00:08:17.978 --> 00:08:18.480
-system.
-
-00b8951e-e1d3-4115-b0fa-758c0517c6ca-0
-00:08:19.040 --> 00:08:24.094
-Now something that I already alluded to
-but didn't state formally is that
-
-00b8951e-e1d3-4115-b0fa-758c0517c6ca-1
-00:08:24.094 --> 00:08:29.285
-software architecture is the output of
-the design phase in the input to the
-
-00b8951e-e1d3-4115-b0fa-758c0517c6ca-2
-00:08:29.285 --> 00:08:30.720
-implementation phase.
-
-9ec81332-08dc-4ee6-8f51-57803cab8432-0
-00:08:31.080 --> 00:08:34.652
-In this course,
-we're going to focus on arguably the most
-
-9ec81332-08dc-4ee6-8f51-57803cab8432-1
-00:08:34.652 --> 00:08:37.240
-important step, which is the design phase.
-
-bf41dbf4-d8ab-4bea-b873-034962ad2777-0
-00:08:37.840 --> 00:08:43.560
-The design phase is essentially a process
-of defining the software architecture of
-
-bf41dbf4-d8ab-4bea-b873-034962ad2777-1
-00:08:43.560 --> 00:08:48.660
-the system that an entire team,
-or even multiple teams of engineers later
-
-bf41dbf4-d8ab-4bea-b873-034962ad2777-2
-00:08:48.660 --> 00:08:53.070
-proceed to implement,
-sometimes over a course of multiple weeks
-
-bf41dbf4-d8ab-4bea-b873-034962ad2777-3
-00:08:53.070 --> 00:08:53.760
-or months.
-
-40aa45ac-5214-449b-ad59-9c75eb4aeb47-0
-00:08:54.920 --> 00:08:57.863
-Now,
-there are many challenges of defining a
-
-40aa45ac-5214-449b-ad59-9c75eb4aeb47-1
-00:08:57.863 --> 00:09:03.293
-good software architecture for our system,
-but the biggest challenge that software
-
-40aa45ac-5214-449b-ad59-9c75eb4aeb47-2
-00:09:03.293 --> 00:09:08.200
-engineers struggle with the most is the
-fact that unlike an algorithm or a
-
-40aa45ac-5214-449b-ad59-9c75eb4aeb47-3
-00:09:08.200 --> 00:09:12.059
-formula that can be proven to be both
-correct and optimal,
-
-40aa45ac-5214-449b-ad59-9c75eb4aeb47-4
-00:09:12.059 --> 00:09:15.200
-we can't do the same for software
-architecture.
-
-70029e87-0bcc-4398-a71e-c01d23c8f852-0
-00:09:15.760 --> 00:09:20.322
-So to guarantee our success,
-what we can do is follow a methodical
-
-70029e87-0bcc-4398-a71e-c01d23c8f852-1
-00:09:20.322 --> 00:09:25.769
-design process as well as apply industry
-proven architectural patterns and best
-
-70029e87-0bcc-4398-a71e-c01d23c8f852-2
-00:09:25.769 --> 00:09:28.901
-practises,
-which is what we're going to learn
-
-70029e87-0bcc-4398-a71e-c01d23c8f852-3
-00:09:28.901 --> 00:09:30.400
-throughout the course.
-
-352afa8d-a88a-4ce9-ad28-5d5e202bdb3f-0
-00:09:31.560 --> 00:09:36.145
-But before we proceed to the first topic,
-let's quickly summarise what we learned
-
-352afa8d-a88a-4ce9-ad28-5d5e202bdb3f-1
-00:09:36.145 --> 00:09:37.040
-in this lecture.
-
-cb29bbe7-3646-47af-8915-373a7c9268e8-0
-00:09:38.080 --> 00:09:41.860
-In this lecture,
-we got the intuition and motivation for
-
-cb29bbe7-3646-47af-8915-373a7c9268e8-1
-00:09:41.860 --> 00:09:43.320
+when we're tasked to implement a method
+
+2a3e4a18-e5d3-43c5-94dd-a95e9f697247-1
+00:00:57.829 --> 00:01:02.644
+or an algorithm in an existing code base,
+we typically know what the input and
+
+2a3e4a18-e5d3-43c5-94dd-a95e9f697247-2
+00:01:02.644 --> 00:01:03.680
+output look like.
+
+89a5a566-9fe7-4a60-a243-0a628c10c128-0
+00:01:03.920 --> 00:01:08.360
+We're also somewhat limited to the
+programming languages we're going to use.
+
+f31e2986-a21d-482f-99fe-ffcd79909d79-0
+00:01:09.240 --> 00:01:13.580
+As we go up to a more high level
+obstruction, like designing a Class,
+
+f31e2986-a21d-482f-99fe-ffcd79909d79-1
+00:01:13.580 --> 00:01:18.540
+A module, a library, or an application,
+the range of possible ways to solve the
+
+f31e2986-a21d-482f-99fe-ffcd79909d79-2
+00:01:18.540 --> 00:01:22.880
+problem becomes bigger and bigger as we
+have more degrees of freedom.
+
+070abd81-57fd-4974-8956-7fdc8d278109-0
+00:01:23.560 --> 00:01:26.371
+Also,
+the scope of the problem becomes so high
+
+070abd81-57fd-4974-8956-7fdc8d278109-1
+00:01:26.371 --> 00:01:29.960
+that it's hard for us to even visualize
+the implementation.
+
+2a9a175f-6872-4d71-bd72-cb88974fa999-0
+00:01:31.200 --> 00:01:34.073
+So when we are asked to design an entire
+system,
+
+2a9a175f-6872-4d71-bd72-cb88974fa999-1
+00:01:34.073 --> 00:01:38.120
+we may feel so overwhelmed that we may
+not even know where to begin.
+
+f530cad5-2a25-46d1-8cc3-4c22181c4a43-0
+00:01:39.280 --> 00:01:42.374
+For example,
+imagine you're asked to design a file
+
+f530cad5-2a25-46d1-8cc3-4c22181c4a43-1
+00:01:42.374 --> 00:01:45.044
+storage system,
+a video streaming solution,
+
+f530cad5-2a25-46d1-8cc3-4c22181c4a43-2
+00:01:45.044 --> 00:01:49.837
+or a ride sharing service that needs to
+scale to serving millions of users per
+
+f530cad5-2a25-46d1-8cc3-4c22181c4a43-3
+00:01:49.837 --> 00:01:50.079
+day.
+
+0e40880e-f5fc-44ee-afb5-69e899a2844e-0
+00:01:50.240 --> 00:01:52.760
+It's hard not to get overwhelmed by such
+a task.
+
+5ff6065f-d87c-4ede-833e-15cdff3417b5-0
+00:01:54.600 --> 00:01:59.019
+The second challenge and difference from
+what we're normally used to is the level
+
+5ff6065f-d87c-4ede-833e-15cdff3417b5-1
+00:01:59.019 --> 00:01:59.720
+of ambiguity.
+
+1f956c46-9b1e-44a6-8b14-8e505e59abfb-0
+00:02:00.360 --> 00:02:03.040
+The reason for this ambiguity is twofold.
+
+7042cb5e-b57a-425d-8c87-4b39323f04a2-0
+00:02:03.560 --> 00:02:06.782
+First of all,
+in many cases the requirements are not
+
+7042cb5e-b57a-425d-8c87-4b39323f04a2-1
+00:02:06.782 --> 00:02:10.916
+even coming from an engineer,
+and sometimes they're not even coming
+
+7042cb5e-b57a-425d-8c87-4b39323f04a2-2
+00:02:10.916 --> 00:02:12.680
+from a very technical person.
+
+ac9f333a-4dbc-4572-92f1-41ec54e906dc-0
+00:02:13.040 --> 00:02:17.771
+So the client or product manager may ask
+for something very high level,
+
+ac9f333a-4dbc-4572-92f1-41ec54e906dc-1
+00:02:17.771 --> 00:02:23.225
+and it's our responsibility to transform
+those requests into precise and technical
+
+ac9f333a-4dbc-4572-92f1-41ec54e906dc-2
+00:02:23.225 --> 00:02:24.080
+requirements.
+
+24bcf50e-c806-4f0d-8ad1-a4df580d5ef2-0
+00:02:24.400 --> 00:02:28.729
+Those technical requirements will serve
+as the foundation for building our
+
+24bcf50e-c806-4f0d-8ad1-a4df580d5ef2-1
+00:02:28.729 --> 00:02:30.000
 software architecture.
 
-a5c7f533-b809-4813-80a9-c677bd8ef44a-0
-00:09:43.960 --> 00:09:49.374
-We learned that every software system has
-an architecture which is basically its
+ebabb3d0-bb41-4d96-8523-e9a32dbaac55-0
+00:02:30.320 --> 00:02:34.735
+The second reason for the high level of
+ambiguity is getting the specific
 
-a5c7f533-b809-4813-80a9-c677bd8ef44a-1
-00:09:49.374 --> 00:09:52.850
-structure,
-and its structure is absolutely critical
+ebabb3d0-bb41-4d96-8523-e9a32dbaac55-1
+00:02:34.735 --> 00:02:37.480
+requirements is already part of the
+solution.
 
-a5c7f533-b809-4813-80a9-c677bd8ef44a-2
-00:09:52.850 --> 00:09:53.920
-for its success.
+ed05a462-ecbe-4265-8d3f-0a8fe7704a08-0
+00:02:37.880 --> 00:02:40.637
+This may seem a little odd for us at
+first,
 
-8141e209-cb27-467f-98ea-20be2041418d-0
-00:09:54.600 --> 00:09:59.725
-We later define software architecture
-more formally as a high level description
+ed05a462-ecbe-4265-8d3f-0a8fe7704a08-1
+00:02:40.637 --> 00:02:45.526
+but we have to remember that the client
+doesn't always know exactly what they
 
-8141e209-cb27-467f-98ea-20be2041418d-1
-00:09:59.725 --> 00:10:02.992
-of the system structure,
-its different components,
+ed05a462-ecbe-4265-8d3f-0a8fe7704a08-2
+00:02:45.526 --> 00:02:45.840
+need.
 
-8141e209-cb27-467f-98ea-20be2041418d-2
-00:10:02.992 --> 00:10:07.862
-and how those components communicate with
-each other to fulfil the system's
+0613570a-0236-4a0c-a442-6307d155c9d2-0
+00:02:45.920 --> 00:02:49.520
+The only thing they know for sure is the
+problem they need to solve.
 
-8141e209-cb27-467f-98ea-20be2041418d-3
-00:10:07.862 --> 00:10:09.719
-requirements and constraints.
+f4337826-4c87-4255-ac5f-d67b12efc591-0
+00:02:50.400 --> 00:02:53.160
+To demonstrate this,
+let's take a specific example.
 
-1840cf91-a25e-483e-9877-9d09dcee6779-0
-00:10:10.520 --> 00:10:15.622
-And we concluded with placing software
-architecture in the overall software
+f821f1f9-b813-4594-9749-e58dab53c562-0
+00:02:55.280 --> 00:02:59.761
+Let's say we're asked to design A
+hitchhiking service that allows people to
 
-1840cf91-a25e-483e-9877-9d09dcee6779-1
-00:10:15.622 --> 00:10:20.992
-development cycle as the output of the
-design phase in the input to our systems
+f821f1f9-b813-4594-9749-e58dab53c562-1
+00:02:59.761 --> 00:03:04.420
+join drivers that are already driving on
+a particular route and are willing to
 
-1840cf91-a25e-483e-9877-9d09dcee6779-2
-00:10:20.992 --> 00:10:21.999
-implementation.
+f821f1f9-b813-4594-9749-e58dab53c562-2
+00:03:04.420 --> 00:03:06.720
+take passengers on their way for a fee.
 
-80d1e43f-43f4-432a-a4f5-1fd84d1ee531-0
-00:10:22.560 --> 00:10:26.894
-So now that we get a solid introduction
-to what we're going to learn,
+a75d85d4-f925-472c-9bc6-99215ce8c0e9-0
+00:03:06.920 --> 00:03:11.995
+That may be all the requirements we get
+from the client and it is up to us to ask
 
-80d1e43f-43f4-432a-a4f5-1fd84d1ee531-1
-00:10:26.894 --> 00:10:30.920
-let's go ahead and Start learning the
-first topic of the course.
+a75d85d4-f925-472c-9bc6-99215ce8c0e9-1
+00:03:11.995 --> 00:03:16.761
+things like is it going to be a real time
+service or the riders will have to
+
+a75d85d4-f925-472c-9bc6-99215ce8c0e9-2
+00:03:16.761 --> 00:03:18.679
+contact the drivers in advance?
+
+764a8954-24d5-43a4-9f34-2663a21f2e6c-0
+00:03:18.800 --> 00:03:22.840
+Is it going to be a mobile or desktop
+experience or maybe both?
+
+4bd05bba-741b-41b8-95cc-d24ed035c649-0
+00:03:23.040 --> 00:03:27.931
+Are we going to enable payment through
+our system or the riders will have to pay
+
+4bd05bba-741b-41b8-95cc-d24ed035c649-1
+00:03:27.931 --> 00:03:29.200
+the drivers directly?
+
+ebb83778-3434-4323-b11e-179e19aacbe5-0
+00:03:29.400 --> 00:03:33.028
+In some cases,
+the client may not even know the answer
+
+ebb83778-3434-4323-b11e-179e19aacbe5-1
+00:03:33.028 --> 00:03:36.920
+to those right away until we actually ask
+those questions.
+
+f7537723-517e-4215-91e6-853de49ce654-0
+00:03:37.080 --> 00:03:40.251
+That is why in most system design
+interviews,
+
+f7537723-517e-4215-91e6-853de49ce654-1
+00:03:40.251 --> 00:03:45.145
+one of the things being tested is our
+ability to clarify and ask those
+
+f7537723-517e-4215-91e6-853de49ce654-2
+00:03:45.145 --> 00:03:46.800
+questions ahead of time.
+
+9f9afd47-58aa-433e-bb20-2b1abc4c7e23-0
+00:03:47.000 --> 00:03:51.017
+Because as we can see,
+asking those questions and gathering
+
+9f9afd47-58aa-433e-bb20-2b1abc4c7e23-1
+00:03:51.017 --> 00:03:54.500
+those requirements is already part of the
+solution,
+
+9f9afd47-58aa-433e-bb20-2b1abc4c7e23-2
+00:03:54.500 --> 00:03:58.920
+and it greatly narrows down what we need
+to design and build Now.
+
+e972f4a7-2fb1-4c0c-b038-5c9642c8eb39-0
+00:03:58.920 --> 00:04:02.400
+What happens if we don't get all the
+requirements right?
+
+f220cafd-2d9b-414d-ac3e-58a78baf8462-0
+00:04:03.000 --> 00:04:04.720
+Can't we just do it incrementally?
+
+0b693c43-5003-49f7-8127-8b8220c75423-0
+00:04:04.960 --> 00:04:09.120
+Why can't we simply build something and
+see if it satisfies the client?
+
+dc41b375-ad8f-45e4-b1ec-565aa904ef19-0
+00:04:09.200 --> 00:04:12.680
+And if it doesn't, no big deal,
+we can just fix it, can't we?
+
+67fa2076-831a-4609-be59-451e18a098a7-0
+00:04:13.000 --> 00:04:15.997
+After all,
+we're not building a building or a bridge
+
+67fa2076-831a-4609-be59-451e18a098a7-1
+00:04:15.997 --> 00:04:16.280
+here.
+
+cb682204-51ce-44fa-981b-6b4572661598-0
+00:04:16.280 --> 00:04:20.470
+There's seemingly no big cost of
+materials and software like in mechanical
+
+cb682204-51ce-44fa-981b-6b4572661598-1
+00:04:20.470 --> 00:04:23.600
+engineering for example,
+or construction of a building.
+
+6332d416-ade2-46e6-a7b7-e27f436c9aca-0
+00:04:25.040 --> 00:04:27.958
+Well,
+the mental leap we need to make here from
+
+6332d416-ade2-46e6-a7b7-e27f436c9aca-1
+00:04:27.958 --> 00:04:33.006
+small projects like building a method or
+a few classes where we can easily rewrite
+
+6332d416-ade2-46e6-a7b7-e27f436c9aca-2
+00:04:33.006 --> 00:04:35.559
+the code many times until we get it right.
+
+d9a395e2-810f-427d-88cc-88a51baf1fd7-0
+00:04:35.640 --> 00:04:41.080
+Large scale systems are big projects that
+cannot be changed easily overnight.
+
+30b47d3f-0218-4182-bb4d-160c952943d8-0
+00:04:41.920 --> 00:04:46.636
+Those projects take many engineers,
+sometimes even multiple teams of
+
+30b47d3f-0218-4182-bb4d-160c952943d8-1
+00:04:46.636 --> 00:04:47.320
+engineers.
+
+82fec895-ea95-407d-bb9a-74b9ba328b81-0
+00:04:47.360 --> 00:04:51.340
+They can take months to build,
+which makes the cost of engineering time
+
+82fec895-ea95-407d-bb9a-74b9ba328b81-1
+00:04:51.340 --> 00:04:52.280
+very significant.
+
+cb6b0e75-34a4-46dd-9ddf-9e08e2388630-0
+00:04:53.000 --> 00:04:57.870
+They also often require purchasing
+hardware and sometimes software licenses
+
+cb6b0e75-34a4-46dd-9ddf-9e08e2388630-1
+00:04:57.870 --> 00:05:00.818
+upfront,
+and those projects typically involve
+
+cb6b0e75-34a4-46dd-9ddf-9e08e2388630-2
+00:05:00.818 --> 00:05:04.600
+contracts with time commitments and
+financial obligations.
+
+b297745e-6022-4dfd-bdad-87a1cc4a2c83-0
+00:05:05.200 --> 00:05:08.552
+Also,
+not delivering the product to our clients
+
+b297745e-6022-4dfd-bdad-87a1cc4a2c83-1
+00:05:08.552 --> 00:05:14.071
+or users on time may cause irreversible
+damage to our company's reputation and
+
+b297745e-6022-4dfd-bdad-87a1cc4a2c83-2
+00:05:14.071 --> 00:05:17.913
+brand image,
+So getting the requirements right upfront
+
+b297745e-6022-4dfd-bdad-87a1cc4a2c83-3
+00:05:17.913 --> 00:05:19.519
+is absolutely critical.
+
+a3165839-4353-49ad-965f-74b8b19ac11e-0
+00:05:21.000 --> 00:05:24.372
+O Now that we got the motivation for
+system requirements,
+
+a3165839-4353-49ad-965f-74b8b19ac11e-1
+00:05:24.372 --> 00:05:28.791
+let's take a step further and learn to
+classify the requirements into a few
+
+a3165839-4353-49ad-965f-74b8b19ac11e-2
+00:05:28.791 --> 00:05:33.152
+categories which have completely
+different effects on our architecture and
+
+a3165839-4353-49ad-965f-74b8b19ac11e-3
+00:05:33.152 --> 00:05:33.560
+design.
+
+a0be26bf-836e-4f93-9fe4-466637d9da4d-0
+00:05:35.280 --> 00:05:39.283
+The three main types of requirements are
+features of the system,
+
+a0be26bf-836e-4f93-9fe4-466637d9da4d-1
+00:05:39.283 --> 00:05:44.148
+also known as functional requirements,
+quality attributes which are also known
+
+a0be26bf-836e-4f93-9fe4-466637d9da4d-2
+00:05:44.148 --> 00:05:48.151
+as non functional requirements,
+and system constraints which are
+
+a0be26bf-836e-4f93-9fe4-466637d9da4d-3
+00:05:48.151 --> 00:05:51.600
+basically the limitations and boundaries
+of the system.
+
+3ecab406-ec25-47ef-ad77-629485604f9f-0
+00:05:52.280 --> 00:05:55.200
+Let's start talking about the first type
+of requirements,
+
+3ecab406-ec25-47ef-ad77-629485604f9f-1
+00:05:55.200 --> 00:05:56.560
+the features of the system.
+
+2e80621b-c722-4be7-9c39-6b995f9adb58-0
+00:05:58.440 --> 00:06:02.160
+Those requirements essentially describe
+the system's behavior.
+
+f9c54fa9-49ed-43d8-9b77-095410c83a18-0
+00:06:02.160 --> 00:06:05.874
+In other words,
+what the system we're designing actually
+
+f9c54fa9-49ed-43d8-9b77-095410c83a18-1
+00:06:05.874 --> 00:06:06.200
+does.
+
+d2b383c4-6435-4b85-83b5-327eb7572f3e-0
+00:06:06.960 --> 00:06:11.120
+Those requirements are easily tied to the
+objective of the system.
+
+413cff70-7945-426f-ba69-7d93bb412ab5-0
+00:06:11.600 --> 00:06:15.641
+They are also called functional
+requirements because they essentially
+
+413cff70-7945-426f-ba69-7d93bb412ab5-1
+00:06:15.641 --> 00:06:18.240
+describe our system as a black box
+function.
+
+b77e185f-7dde-4203-ae3e-d44026ddb1cc-0
+00:06:18.360 --> 00:06:23.038
+The user's inputs or external events are
+the inputs to that function,
+
+b77e185f-7dde-4203-ae3e-d44026ddb1cc-1
+00:06:23.038 --> 00:06:27.716
+and the result or outcome of the
+operation taken by our system is the
+
+b77e185f-7dde-4203-ae3e-d44026ddb1cc-2
+00:06:27.716 --> 00:06:29.320
+output of that function.
+
+059906a2-0717-4eda-a226-84a2601ef427-0
+00:06:31.120 --> 00:06:35.777
+It's important to point out that the
+features or functional requirements
+
+059906a2-0717-4eda-a226-84a2601ef427-1
+00:06:35.777 --> 00:06:40.370
+simply dictate the functionality of our
+system but do not determine its
+
+059906a2-0717-4eda-a226-84a2601ef427-2
+00:06:40.370 --> 00:06:41.200
+architecture.
+
+1301c3cd-b38c-47ea-a73f-f0da3b5b13af-0
+00:06:41.440 --> 00:06:44.975
+And generally any architecture can
+achieve any feature,
+
+1301c3cd-b38c-47ea-a73f-f0da3b5b13af-1
+00:06:44.975 --> 00:06:49.080
+which is what makes our job as software
+architects so difficult.
+
+3c1f9cd8-6408-4363-b894-c8ba00e853ed-0
+00:06:50.760 --> 00:06:55.838
+Now let's look at a few examples of
+features or functional requirements in
+
+3c1f9cd8-6408-4363-b894-c8ba00e853ed-1
+00:06:55.838 --> 00:07:00.578
+our hitchhiking service example,
+one functional requirement can be as
+
+3c1f9cd8-6408-4363-b894-c8ba00e853ed-2
+00:07:00.578 --> 00:07:01.120
+follows.
+
+7c0318f0-4dba-415c-aa9a-797c2587f9e4-0
+00:07:01.240 --> 00:07:07.161
+When a rider logs into our mobile app,
+the system must display a map with nearby
+
+7c0318f0-4dba-415c-aa9a-797c2587f9e4-1
+00:07:07.161 --> 00:07:09.720
+drivers within 5 miles from radius.
+
+25715e0e-c6c6-4cfd-bd6e-e2fcbff3b4c3-0
+00:07:10.360 --> 00:07:13.555
+Here,
+the input to our system is the user's
+
+25715e0e-c6c6-4cfd-bd6e-e2fcbff3b4c3-1
+00:07:13.555 --> 00:07:17.550
+login action,
+and the output is the view of a map with
+
+25715e0e-c6c6-4cfd-bd6e-e2fcbff3b4c3-2
+00:07:17.550 --> 00:07:18.640
+nearby drivers.
+
+7212bac2-7973-4cee-843b-9985eea1f366-0
+00:07:20.120 --> 00:07:21.680
+Let's take another example.
+
+19801432-971d-4254-ba8e-a74849963e3e-0
+00:07:22.560 --> 00:07:27.424
+When the ride is complete the system will
+charge the riders credit card and
+
+19801432-971d-4254-ba8e-a74849963e3e-1
+00:07:27.424 --> 00:07:31.200
+transfer that money to the driver minus
+some service fees.
+
+05bfbdc1-ab89-4d41-95b8-c00a3a970be5-0
+00:07:31.600 --> 00:07:36.646
+Here the completion of the ride is the
+input event and the transfer of the money
+
+05bfbdc1-ab89-4d41-95b8-c00a3a970be5-1
+00:07:36.646 --> 00:07:38.640
+is the outcome of the operation.
+
+d5dac052-28c8-4006-8f2c-d74a91f609b4-0
+00:07:40.320 --> 00:07:43.470
+Now let's talk about the second type of
+requirements,
+
+d5dac052-28c8-4006-8f2c-d74a91f609b4-1
+00:07:43.470 --> 00:07:46.680
+the quality attributes or non functional
+requirements.
+
+85f15c32-6c5d-4d9e-8d63-c0cbaae1c67d-0
+00:07:48.520 --> 00:07:53.169
+The quality attributes are properties
+that the system must have as opposed to
+
+85f15c32-6c5d-4d9e-8d63-c0cbaae1c67d-1
+00:07:53.169 --> 00:07:54.600
+what the system must do.
+
+6d1a9f37-1303-4774-aeae-13cb4fbb2bca-0
+00:07:55.000 --> 00:08:00.273
+Examples of such qualities include
+scalability, availability, reliability,
+
+6d1a9f37-1303-4774-aeae-13cb4fbb2bca-1
+00:08:00.273 --> 00:08:04.352
+security, performance,
+and this list can go on and change
+
+6d1a9f37-1303-4774-aeae-13cb4fbb2bca-2
+00:08:04.352 --> 00:08:06.040
+depending on the system.
+
+9d289a1a-94c8-4a16-b73f-f6c02d0affb5-0
+00:08:07.320 --> 00:08:09.982
+In contrast to the functional
+requirements,
+
+9d289a1a-94c8-4a16-b73f-f6c02d0affb5-1
+00:08:09.982 --> 00:08:14.520
+the quality attributes do dictate the
+software architecture of our system.
+
+1ee758fa-2a0b-430e-85fe-c58bd9f6d9cc-0
+00:08:15.080 --> 00:08:19.531
+Another way to look at this is the
+software architecture defines the system
+
+1ee758fa-2a0b-430e-85fe-c58bd9f6d9cc-1
+00:08:19.531 --> 00:08:23.807
+quality attributes and different
+architectures provide us with different
+
+1ee758fa-2a0b-430e-85fe-c58bd9f6d9cc-2
+00:08:23.807 --> 00:08:24.920
+quality attributes.
+
+45e19ecf-be52-4870-ac88-fa264de223dd-0
+00:08:26.200 --> 00:08:29.560
+The last type of requirements is system
+constraints.
+
+34046799-90f8-45ee-b846-8a5e0347c88c-0
+00:08:31.400 --> 00:08:35.071
+A few examples include strict deadlines,
+limited budget,
+
+34046799-90f8-45ee-b846-8a5e0347c88c-1
+00:08:35.071 --> 00:08:39.000
+or a small number of engineers that can
+work on our project.
+
+79e79708-035c-42f1-97ab-6a2d1ff1c222-0
+00:08:39.080 --> 00:08:44.169
+Such constraints may force us to make
+certain trade-offs and sacrifices in our
+
+79e79708-035c-42f1-97ab-6a2d1ff1c222-1
+00:08:44.169 --> 00:08:49.130
+design and shift us towards certain
+software architectural decisions that we
+
+79e79708-035c-42f1-97ab-6a2d1ff1c222-2
+00:08:49.130 --> 00:08:52.480
+would not make if we didn't have those
+constraints.
+
+cf6a3811-9c67-4473-a40e-186fd76e1251-0
+00:08:54.160 --> 00:08:58.373
+The three types of requirements that we
+learned in this lecture are also
+
+cf6a3811-9c67-4473-a40e-186fd76e1251-1
+00:08:58.373 --> 00:09:02.760
+sometimes referred to as architectural
+drivers because they essentially Dr.
+
+5c4017f6-a6dd-40ef-aa6f-26557b0dd69c-0
+00:09:02.760 --> 00:09:07.335
+our architectural decisions from an
+infinite universe of possibilities
+
+5c4017f6-a6dd-40ef-aa6f-26557b0dd69c-1
+00:09:07.335 --> 00:09:10.880
+towards one solution that satisfies our
+clients needs.
+
+12d94011-44eb-4367-b278-814d6288bdf0-0
+00:09:12.480 --> 00:09:15.670
+In this lecture,
+we learned about the importance of
+
+12d94011-44eb-4367-b278-814d6288bdf0-1
+00:09:15.670 --> 00:09:18.800
+requirements in the design of large scale
+systems.
+
+18e0d85f-d852-4b06-b906-3ecb8f63ad6d-0
+00:09:19.160 --> 00:09:23.066
+We discussed a few challenges of
+gathering those requirements,
+
+18e0d85f-d852-4b06-b906-3ecb8f63ad6d-1
+00:09:23.066 --> 00:09:27.902
+such as the large scope and ambiguity
+that we may not be familiar with coming
+
+18e0d85f-d852-4b06-b906-3ecb8f63ad6d-2
+00:09:27.902 --> 00:09:30.320
+from a smaller scale programming world.
+
+f902b7e3-dcf1-4dc4-a27e-34e2ac36db87-0
+00:09:30.920 --> 00:09:34.029
+After that,
+we talked about the risks of not getting
+
+f902b7e3-dcf1-4dc4-a27e-34e2ac36db87-1
+00:09:34.029 --> 00:09:36.200
+those requirements correctly upfront.
+
+516ab18d-3bb7-4b21-afbb-e3345c42f207-0
+00:09:36.360 --> 00:09:39.203
+And finally,
+we classified those requirements into
+
+516ab18d-3bb7-4b21-afbb-e3345c42f207-1
+00:09:39.203 --> 00:09:42.213
+three groups,
+which are also called the architectural
+
+516ab18d-3bb7-4b21-afbb-e3345c42f207-2
+00:09:42.213 --> 00:09:43.440
+drivers of the system.
+
+3e97ec91-d3c7-42aa-9d13-0505fb1424df-0
+00:09:43.960 --> 00:09:48.142
+Those three groups are the features of
+the system, the quality attributes,
+
+3e97ec91-d3c7-42aa-9d13-0505fb1424df-1
+00:09:48.142 --> 00:09:49.760
+and the system's constraints.
+
+8e40a684-106d-4c6c-903b-57bc8c2d28e0-0
+00:09:51.280 --> 00:09:52.960
+See you guys all in the next lecture.
